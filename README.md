@@ -48,7 +48,7 @@ Fork this repo and give it a ⭐ to support Pkdriller!
 
 #### 🟣 Heroku
 ---
-[![Deploy on Heroku](https://img.shields.io/badge/-DEPLOY-purple?style=for-the-badge&logo=heroku&logoColor=white)](https://dashboard.heroku.com/new?template=https://github.com/nexustech1911/NEXUS-XMD)
+[![Deploy on Heroku](https://img.shields.io/badge/-DEPLOY-purple?style=for-the-badge&logo=heroku&logoColor=white)](https://dashboard.heroku.com/new?template=https://github.com/pkdriller0/NEXUS-AI)
 
 
 ---
