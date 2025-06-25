@@ -55,7 +55,7 @@ zokou({ nomCom: "ping", categorie: "General" }, async (dest, zk, commandeOptions
     }, { quoted: ms });
 
     await zk.sendMessage(dest, {
-        text: "```my repo is here https://github.com/Pkdriller01/NEXUS-AI```"
+        text: "```💙💜💚```"
     } ,{ quoted: ms });// Voice note form
     }catch (e) {
         console.log("❌ Ping Command Error: " + e);
