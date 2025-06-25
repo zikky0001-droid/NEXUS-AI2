@@ -18,7 +18,7 @@ module.exports = {
       if (!response) return;
 
       await conn.sendMessage(m.chat, {
-        text: `🤖 *ChatBot*\n\n${response}\n\n_Powered by ArslanMD Official_`
+        text: `🤖 *ChatBot*\n\n${response}\n\n_💙💙💙_`
       }, { quoted: m });
 
     } catch (err) {
