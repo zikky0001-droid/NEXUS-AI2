@@ -50,7 +50,7 @@ zokou({
     const _0x2d1a51 = _0x239c32.result.download_url;
     const _0xbf16ad = _0x239c32.result;
     const _0x1f96c1 = [{
-      'caption': "\n*CHARLESKE-XMD DOWNLOADER*\n\n *Title: " + _0xbf16ad.title + "*\n *Quality: High*\n *Duration: " + _0x1359fb.timestamp + "*\n> *®Charleske-xmd Player* \n",
+      'caption': "\n*NEXUS-AI MUSIC*\n\n *Title: " + _0xbf16ad.title + "*\n *Quality: High*\n *Duration: " + _0x1359fb.timestamp + "*\n> *®NEXUS-AI Player* \n",
       'document': {
         'url': _0x2d1a51
       },
@@ -58,16 +58,16 @@ zokou({
       'contextInfo': {
         'isForwarded': true,
         'forwardedNewsletterMessageInfo': {
-          'newsletterJid': "120363351653122969@newsletter",
-          'newsletterName': "CHARLESKE-XMD",
+          'newsletterJid': "120363288304618280@newsletter",
+          'newsletterName': "NEXUS-AI",
           'serverMessageId': 0x8f
         },
         'forwardingScore': 0x3e7,
         'externalAdReply': {
-          'title': "®Charleske",
+          'title': "NEXUS-AI",
           'body': "YouTube Search",
-          'thumbnailUrl': 'https://files.catbox.moe/xv5h54.jpg',
-          'sourceUrl': 'https://whatsapp.com/channel/0029Vao2hgeChq6HJ5bmlZ3K',
+          'thumbnailUrl': 'https://files.catbox.moe/eyav0c.jpg',
+          'sourceUrl': 'https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x',
           'mediaType': 0x1,
           'renderLargerThumbnail': true
         }
@@ -80,16 +80,16 @@ zokou({
       'contextInfo': {
         'isForwarded': true,
         'forwardedNewsletterMessageInfo': {
-          'newsletterJid': "120363351653122969@newsletter",
-          'newsletterName': "Charleske-xmd",
+          'newsletterJid': "120363288304618280@newsletter",
+          'newsletterName': "NEXUS-AI",
           'serverMessageId': 0x8f
         },
         'forwardingScore': 0x3e7,
         'externalAdReply': {
-          'title': '®Charleske-xmd',
+          'title': 'NEXUS-AI',
           'body': "YouTube Search",
-          'thumbnailUrl': 'https://files.catbox.moe/xv5h54.jpg',
-          'sourceUrl': "https://whatsapp.com/channel/0029Vao2hgeChq6HJ5bmlZ3K",
+          'thumbnailUrl': 'https://files.catbox.moe/eyav0c.jpg',
+          'sourceUrl': "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x",
           'mediaType': 0x1,
           'renderLargerThumbnail': true
         }
