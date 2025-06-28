@@ -1,4 +1,4 @@
-const { ezra } = require("../framework/zokou");
+const { zokou } = require("../framework/zokou");
 const axios = require('axios');
 const ytSearch = require('yt-search');
 const conf = require(__dirname + '/../set');
