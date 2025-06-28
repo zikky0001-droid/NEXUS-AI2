@@ -31,7 +31,7 @@ zokou({
     const firstVideo = searchResults.videos[0];
     const videoUrl = firstVideo.url;
 
-    // Function to get download data from APIs
+    // Function to get download data from API
     const getDownloadData = async (url) => {
       try {
         const response = await axios.get(url);
@@ -42,24 +42,14 @@ zokou({
       }
     };
 
-    // List of APIs to try
-    const apis = [
-      `https://api-rin-tohsaka.vercel.app/download/ytmp4?url=${encodeURIComponent(videoUrl)}`,
-      `https://api.davidcyriltech.my.id/download/ytmp3?url=${encodeURIComponent(videoUrl)}`,
-      `https://www.dark-yasiya-api.site/download/ytmp3?url=${encodeURIComponent(videoUrl)}`,
-      `https://api.giftedtech.web.id/api/download/dlmp3?url=${encodeURIComponent(videoUrl)}&apikey=gifted-md`,
-      `https://api.dreaded.site/api/ytdl/audio?url=${encodeURIComponent(videoUrl)}`
-    ];
+    // Only one API to use now
+    const api = `https://api.nexoracle.com/downloader/yt-audio2?apikey=bde27483eae0f54a6e&url=${encodeURIComponent(videoUrl)}`;
 
-    let downloadData;
-    for (const api of apis) {
-      downloadData = await getDownloadData(api);
-      if (downloadData && downloadData.success) break;
-    }
+    let downloadData = await getDownloadData(api);
 
     // Check if a valid download URL was found
     if (!downloadData || !downloadData.success) {
-      return repondre('Failed to retrieve download URL from all sources. Please try again later.');
+      return repondre('Failed to retrieve download URL from source. Please try again later.');
     }
 
     const downloadUrl = downloadData.result.download_url;
@@ -153,7 +143,7 @@ zokou({
     const firstVideo = searchResults.videos[0];
     const videoUrl = firstVideo.url;
 
-    // Function to get download data from APIs
+    // Function to get download data from API
     const getDownloadData = async (url) => {
       try {
         const response = await axios.get(url);
@@ -164,24 +154,14 @@ zokou({
       }
     };
 
-    // List of APIs to try
-    const apis = [
-      `https://api-rin-tohsaka.vercel.app/download/ytmp4?url=${encodeURIComponent(videoUrl)}`,
-      `https://api.davidcyriltech.my.id/download/ytmp4?url=${encodeURIComponent(videoUrl)}`,
-      `https://www.dark-yasiya-api.site/download/ytmp4?url=${encodeURIComponent(videoUrl)}`,
-      `https://api.giftedtech.web.id/api/download/dlmp4?url=${encodeURIComponent(videoUrl)}&apikey=gifted-md`,
-      `https://api.dreaded.site/api/ytdl/video?url=${encodeURIComponent(videoUrl)}`
-    ];
+    // Only one API to use now
+    const api = `https://api.nexoracle.com/downloader/yt-audio2?apikey=bde27483eae0f54a6e&url=${encodeURIComponent(videoUrl)}`;
 
-    let downloadData;
-    for (const api of apis) {
-      downloadData = await getDownloadData(api);
-      if (downloadData && downloadData.success) break;
-    }
+    let downloadData = await getDownloadData(api);
 
     // Check if a valid download URL was found
     if (!downloadData || !downloadData.success) {
-      return repondre('Failed to retrieve download URL from all sources. Please try again later.');
+      return repondre('Failed to retrieve download URL from source. Please try again later.');
     }
 
     const downloadUrl = downloadData.result.download_url;
