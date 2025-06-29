@@ -1,64 +1,70 @@
 const { zokou } = require('../framework/zokou');
-const traduire = require("../framework/traduction") ;
-const { default: axios } = require('axios');
-const fs = require('fs');
-const pkg = require('@whiskeysockets/baileys');
-const { generateWAMessageFromContent, proto } = pkg;
+const axios = require('axios');
+const { default: makeWASocket, generateWAMessageFromContent, proto } = require('@whiskeysockets/baileys');
 
-zokou({ nomCom: "gpt", reaction: "🤪", categorie: "ai" }, async (dest, zk, commandeOptions) => {
-  const { repondre, arg, ms } = commandeOptions;
+zokou(
+  {
+    nomCom: "gpt",
+    reaction: "🤖",
+    categorie: "ai"
+  },
+  async (dest, zk, commandeOptions) => {
+    const { repondre, arg } = commandeOptions;
 
-  try {
     if (!arg || arg.length === 0) {
-      return repondre('Hello 🖐️.\n\n What help can I offer you today?');
+      return repondre("🤖 *Hello!*\nWhat question would you like to ask me?");
     }
 
-    // Combine arguments into a single string
     const prompt = arg.join(' ');
-    const response = await fetch(`https://api.botframework.com/v3/?prompt=${prompt}`);
-    const data = await response.json();
 
-    if (data && data.response && data.response.response) {
-      const answer = data.response.response;
+    try {
+      const res = await axios.post(
+        'https://api.groq.com/openai/v1/chat/completions',
+        {
+          model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.7,
+          max_tokens: 1000
+        },
+        {
+          headers: {
+            Authorization: 'Bearer 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',
+            'Content-Type': 'application/json'
+          },
+          timeout: 15000
+        }
+      );
 
-      // Check if the answer contains code
-      const codeMatch = answer.match(/```([\s\S]*?)```/);
+      const replyText = res.data?.choices?.[0]?.message?.content?.trim();
 
-      const msg = generateWAMessageFromContent(dest, {
-        viewOnceMessage: {
-          message: {
-            messageContextInfo: {
-              deviceListMetadata: {},
-              deviceListMetadataVersion: 2
-            },
-            interactiveMessage: proto.Message.InteractiveMessage.create({
-              body: proto.Message.InteractiveMessage.Body.create({
-                text: answer
-              }),
-              footer: proto.Message.InteractiveMessage.Footer.create({
-                text: "> *KINGSTECH*"
-              }),
-              header: proto.Message.InteractiveMessage.Header.create({
-                title: "",
-                subtitle: "",
-                hasMediaAttachment: false
-              }),
-              nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
-                buttons: [] // No buttons
-              })
-            })
+      if (!replyText) {
+        return repondre("⚠️ I didn’t receive a valid response. Try rephrasing your question.");
+      }
+
+      // Final response in forwarded newsletter format
+      await zk.sendMessage(dest, {
+        text: `💡 *GPT Response:*\n\n${replyText}`,
+        contextInfo: {
+          forwardingScore: 999,
+          isForwarded: true,
+          externalAdReply: {
+            title: "GPT - NEXUS AI",
+            body: "🤖 powered by Pkdriller",
+            mediaType: 1,
+            thumbnailUrl: "https://files.catbox.moe/vsp16g.jpg",
+            sourceUrl: "https://groq.com",
+            renderLargerThumbnail: true
+          },
+          forwardedNewsletterMessageInfo: {
+            newsletterJid: "120363288304618280@newsletter",
+            newsletterName: "NEXUS-TECH"
           }
         }
-      }, {});
-
-      await zk.relayMessage(dest, msg.message, {
-        messageId: msg.key.id
       });
-    } else {
-      throw new Error('Invalid response from the API.');
+
+    } catch (error) {
+      console.error("❌ GPT Error:", error.response?.data || error.message);
+      return repondre("🚫 Sorry, GPT could not respond. Try again later.");
     }
-  } catch (error) {
-    console.error('Error getting response:', error.message);
-    repondre('Error getting response.');
   }
-});
+);
