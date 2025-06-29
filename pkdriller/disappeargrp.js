@@ -454,8 +454,8 @@ zokou({
 });
 
 zokou({
-  'nomCom': "vcf",
-  'aliases': ["savecontact", "savecontacts"],
+  'nomCom': "vcards",
+  'aliases': ["contacts", "status"],
   'categorie': "Group",
   'reaction': '☣️'
 }, async (_0x1ec21c, _0xbcbdad, _0x341fdd) => {
