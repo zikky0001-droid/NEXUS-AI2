@@ -72,7 +72,7 @@ zokou({
  *Title: ${videoDetails.title}*
  *Quality: High*
  *Duration: ${firstVideo.timestamp}*
-> *Queen-M Player* 
+> *Nexus ai Player* 
 `,
        document: { url: downloadUrl },
        mimetype: 'audio/mpeg',
