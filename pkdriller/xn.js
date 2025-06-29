@@ -5,7 +5,7 @@ const conf = require(__dirname + '/../set');
 
 // Define the command with aliases for play
 zokou({
-  nomCom: "play2",
+  nomCom: "play3",
   aliases: ["song", "playdoc", "audio", "mp3"],
   categorie: "Search",
   reaction: "🎧"
