@@ -12,7 +12,7 @@ zokou(config, async (responseHandler, args, context) => {
 
   try {
     if (!arg || arg.length === 0) {
-      return repondre("Ask for any book-related news, and yesser md will provide updates.");
+      return repondre("Ask for any book-related news, and Nexus ai will provide updates.");
     }
 
     const query = arg.join(" ");
