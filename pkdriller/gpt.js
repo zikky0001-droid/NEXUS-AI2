@@ -15,7 +15,7 @@ zokou({ nomCom: "gpt", reaction: "🤪", categorie: "ai" }, async (dest, zk, com
 
     // Combine arguments into a single string
     const prompt = arg.join(' ');
-    const response = await fetch(`https://api.openai.com/v1/?prompt=${prompt}`);
+    const response = await fetch(`https://api.botframework.com/v3/?prompt=${prompt}`);
     const data = await response.json();
 
     if (data && data.response && data.response.response) {
