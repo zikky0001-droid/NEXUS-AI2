@@ -25,7 +25,7 @@ zokou({
         }
 
         // Acknowledge image receipt and instruction
-        await repondre("_A moment, alpha md is analyzing contents of the image..._");
+        await repondre("_A moment, nexus ai is analyzing contents of the image..._");
 
         // Download and save the image
         const fdr = await zk.downloadAndSaveMediaMessage(msgRepondu.imageMessage);
@@ -34,7 +34,7 @@ zokou({
         const fta = await uploadtoimgur(fdr);
 
         // Send request to the Gemini API with the image and instruction
-        const genAI = new GoogleGenerativeAI("AIzaSyAlIHZ7BaC9xu_KE8zL8OHSR3TVTeVYxW8");
+        const genAI = new GoogleGenerativeAI("AIzaSyAkxSdt7V5rEn6rQ_UyAVMANNgYvI75H2g");
 
         // Function to convert URL to generative part
         async function urlToGenerativePart(url, mimeType) {
