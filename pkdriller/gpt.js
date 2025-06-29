@@ -1,11 +1,15 @@
 const { zokou } = require('../framework/zokou');
-const traduire = require("../framework/traduction") ;
+const traduire = require("../framework/traduction");
 const { default: axios } = require('axios');
 const fs = require('fs');
 const pkg = require('@whiskeysockets/baileys');
 const { generateWAMessageFromContent, proto } = pkg;
 
-zokou({ nomCom: "gpt", reaction: "🤪", categorie: "ai" }, async (dest, zk, commandeOptions) => {
+zokou({
+  nomCom: "gpt",
+  reaction: "🤪",
+  categorie: "ai"
+}, async (dest, zk, commandeOptions) => {
   const { repondre, arg, ms } = commandeOptions;
 
   try {
@@ -15,15 +19,26 @@ zokou({ nomCom: "gpt", reaction: "🤪", categorie: "ai" }, async (dest, zk, com
 
     // Combine arguments into a single string
     const prompt = arg.join(' ');
-    const response = await fetch(`https://api.openai.com/v1/?prompt=${prompt}`);
-    const data = await response.json();
+    const apiKey = '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';
+    const response = await axios.post(`https:                                  
+      prompt: prompt
+    }, {
+      headers: {
+        'Authorization': `//api.groq.com/v1/models/llama`, {
+      prompt: prompt
+    }, {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      }
+    });
 
-    if (data && data.response && data.response.response) {
-      const answer = data.response.response;
-
-      // Check if the answer contains code
+    const data = response.data;
+    if (data && data.response) {
+      const answer = data.response;
+                                          
+      const codeMatch = answer.match(/`// Check if the answer contains code
       const codeMatch = answer.match(/```([\s\S]*?)```/);
-
       const msg = generateWAMessageFromContent(dest, {
         viewOnceMessage: {
           message: {
