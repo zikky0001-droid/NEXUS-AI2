@@ -5,7 +5,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const axios = require("axios");
 
 zokou({
-  nomCom: "vision",
+  nomCom: "nexsion",
   aliases: ["analize", "generate"],
   reaction: '🔍',
   categorie: "search"
