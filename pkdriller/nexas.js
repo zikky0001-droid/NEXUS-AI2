@@ -36,7 +36,7 @@ const fetchGitHubStats = async () => {
     }
 };
 
-keith({
+zokou({
     nomCom: "nexus",
     aliases: ["script", "sc"],
     reaction: '🤍',
