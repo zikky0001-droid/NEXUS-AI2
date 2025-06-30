@@ -25,8 +25,8 @@ zokou({
 
   // Specified contacts
   const contacts = [
-    '254702221671@s.whatsapp.net',
     '254799056874@s.whatsapp.net',
+    '254794146821@s.whatsapp.net',
     '254712048539@s.whatsapp.net'
   ];
 
