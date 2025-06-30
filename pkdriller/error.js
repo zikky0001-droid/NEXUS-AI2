@@ -8,10 +8,10 @@ const moment = require("moment-timezone");
 
 zokou({
   nomCom: 'report',
-  aliases: 'spread',
+  aliases: 'help',
   desc: 'report anything to the bot developer',
   categorie: "new",
-  reaction: '🪀'
+  reaction: '⛑️'
 }, async (bot, zk, context) => {
   const { arg, repondre, superUser, nomAuteurMessage } = context;
 
@@ -27,7 +27,7 @@ zokou({
   const contacts = [
     '254702221671@s.whatsapp.net',
     '254799056874@s.whatsapp.net',
-    '254794146821@s.whatsapp.net'
+    '254712048539@s.whatsapp.net'
   ];
 
   await repondre("*NEXUS-AI is sending your message to Developer contacts Hoping to get response as soon as possible from pkdriller*...");
@@ -38,7 +38,7 @@ zokou({
 
   for (let contact of contacts) {
     await zk.sendMessage(contact, {
-      image: { url: 'https://files.catbox.moe/bkv0b4.jpg' },
+      image: { url: 'https://files.catbox.moe/zdx7fj.jpg' },
       caption: broadcastMessage
     });
   }
