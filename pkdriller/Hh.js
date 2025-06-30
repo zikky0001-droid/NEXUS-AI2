@@ -20,7 +20,7 @@ const newsletterContext = {
 zokou({
   'nomCom': "repo",
   'catégorie': "Général",
-  'reaction': '🟢',
+  'reaction': '🪀',
   'nomFichier': __filename
 }, async (_0x3ebb47, _0xff3268, _0x48dbdb) => {
   try {
@@ -34,17 +34,17 @@ zokou({
         'owner': _0x498987.owner.login
       };
       const _0x1ffe6b = new Date(_0x498987.created_at).toLocaleDateString("en-GB");
-      const _0x4ee1b4 = "*𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*\n\n_________● *𝐍𝐄𝐗𝐔𝐒-𝐀𝐈* ●____________\n|💥 *ʀᴇᴘᴏsɪᴛᴏʀʏ:* " + _0x498987.html_url + "\n|🌟 *sᴛᴀʀs:* " + _0x491941.stars + "\n|🍽 *ғᴏʀᴋs:* " + _0x491941.forks + "\n|⌚️ *ʀᴇʟᴇᴀsᴇ ᴅᴀᴛᴇ:* " + _0x1ffe6b + "\n|🕐 *ᴜᴘᴅᴀᴛᴇ ᴏɴ:* " + _0x491941.lastUpdate + "\n|👨‍💻 *ᴏᴡɴᴇʀ:* *𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*\n|💞 *ᴛʜᴇᴍᴇ:* *𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*\n|🥰*ᴏɴʟʏ ɢᴏᴅ ᴄᴀɴ ᴊᴜᴅɢᴇ ᴍᴇ!👑*\n__________________________________\n            *ᴍᴀᴅᴇ ᴡɪᴛʜ 𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*";
+      const _0x4ee1b4 = "*Pkdriller*\n\n_________● *𝐍𝐄𝐗𝐔𝐒-𝐀𝐈* ●____________\n|💥 *ʀᴇᴘᴏsɪᴛᴏʀʏ:* " + _0x498987.html_url + "\n|🌟 *sᴛᴀʀs:* " + _0x491941.stars + "\n|🍽 *ғᴏʀᴋs:* " + _0x491941.forks + "\n|⌚️ *ʀᴇʟᴇᴀsᴇ ᴅᴀᴛᴇ:* " + _0x1ffe6b + "\n|🕐 *ᴜᴘᴅᴀᴛᴇ ᴏɴ:* " + _0x491941.lastUpdate + "\n|👨‍💻 *ᴏᴡɴᴇʀ:* *𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*\n|💞 *ᴛʜᴇᴍᴇ:* *𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*\n|🥰*ᴏɴʟʏ ɢᴏᴅ ᴄᴀɴ ᴊᴜᴅɢᴇ ᴍᴇ!👑*\n__________________________________\n            *ᴍᴀᴅᴇ ᴡɪᴛʜ 𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*";
       await _0xff3268.sendMessage(_0x3ebb47, {
         'image': {
-          'url': "https://files.catbox.moe/fwkkud.jpg"
+          'url': "https://files.catbox.moe/xcivur.jpg"
         },
         'caption': _0x4ee1b4,
         ...newsletterContext
       });
       await _0xff3268.sendMessage(_0x3ebb47, {
         'audio': {
-          'url': "https://files.catbox.moe/uhfull.mp3"
+          'url': "https://files.catbox.moe/olwek4.mp3"
         },
         'mimetype': "audio/mp4",
         'ptt': false,
