@@ -29,14 +29,14 @@
 
 ## 🚀 Deployment Options
 
-### ⭐ Fork & Star the Repository
+## ⭐ Fork & Star the Repository
 Fork this repo and give it a ⭐ to support Pkdriller!
 
 [![Fork Repo](https://img.shields.io/badge/Github-Fork%20Repo-red?style=for-the-badge&logo=Github)](https://github.com/pkdriller0/NEXUS-AI/fork)
 
 ---
 
-### 💙 Pairing Code 💚 Session Generator💜
+## 💙 Pairing Code 💚 Session Generator💜
 
 [![Pair Code](https://img.shields.io/badge/Google-Pair%20Code-blue?style=for-the-badge&logo=Google)](https://nexus-ai-pairing-site-1383.onrender.com/)
 
@@ -44,16 +44,16 @@ Fork this repo and give it a ⭐ to support Pkdriller!
 
 ---
 
-### 🛠 Step-by-Step Deployment Guide
+## 🛠 Step-by-Step Deployment Guide
 
-#### 🟣 Heroku
+## 🟣 Heroku
 ---
 [![Deploy on Heroku](https://img.shields.io/badge/-DEPLOY-purple?style=for-the-badge&logo=heroku&logoColor=white)](https://dashboard.heroku.com/new?template=https://github.com/pkdriller0/NEXUS-AI)
 
 
 ---
 
-#### 🟪 Railway
+## 🟪 Railway
 
 [![Deploy on Railway](https://img.shields.io/badge/-DEPLOY-purple?style=for-the-badge&logo=railway&logoColor=white)](https://railway.app/login)
 
@@ -61,7 +61,7 @@ Fork this repo and give it a ⭐ to support Pkdriller!
 
 ---
 
-#### ⚫ Render
+## ⚫ Render
 
 [![Deploy on Render](https://img.shields.io/badge/-DEPLOY-black?style=for-the-badge&logo=render&logoColor=white)](https://dashboard.render.com)
 
