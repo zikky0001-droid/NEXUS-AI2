@@ -55,7 +55,7 @@ zokou({
         'externalAdReply': {
           'title': "NEXUS AI",
           'body': "Tap to join the official channel",
-          'thumbnailUrl': "https://files.catbox.moe/q99uu1.jpg",
+          'thumbnailUrl': "https://github.com/nexustech1911/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg",
           'mediaType': 0x1,
           'renderLargerThumbnail': true
         }
@@ -63,7 +63,7 @@ zokou({
     });
     await _0x35dd19.sendMessage(_0x466846, {
       'audio': {
-        'url': "https://files.catbox.moe/m4sf9a.mp3"
+        'url': "https://github.com/nexustech1911/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3"
       },
       'mimetype': 'audio/mp4',
       'ptt': false
