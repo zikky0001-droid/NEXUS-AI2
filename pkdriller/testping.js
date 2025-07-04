@@ -8,9 +8,9 @@ zokou(
     console.log("Alive command triggered!");
 
     // URLs and configurations
-    const fullImageUrl = "https://files.catbox.moe/ts2az9.jpg"; // Full image URL
-    const smallThumbnailUrl = "https://files.catbox.moe/ts2az9.jpg"; // Small thumbnail URL
-    const randomAudio = "https://files.catbox.moe/kyg8f6.mp3"; // Voice note URL
+    const fullImageUrl = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg"; // Full image URL
+    const smallThumbnailUrl = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg"; // Small thumbnail URL
+    const randomAudio = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3"; // Voice note URL
     const sourceUrl = "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x"; // Channel link
     const contactName = commandeOptions?.ms?.pushName || "Unknown Contact"; // Sender's name or "Unknown Contact"
 
@@ -55,9 +55,9 @@ zokou(
     console.log("Alive command triggered!");
 
     // URLs and configurations
-    const fullImageUrl = "https://files.catbox.moe/kyg8f6.mp3"; // Full image URL
-    const smallThumbnailUrl = "https://files.catbox.moe/ts2az9.jpg"; // Small thumbnail URL
-    const randomAudio = "https://files.catbox.moe/qqfvgv.mp3"; // Voice note URL
+    const fullImageUrl = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3"; // Full image URL
+    const smallThumbnailUrl = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg"; // Small thumbnail URL
+    const randomAudio = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3"; // Voice note URL
     const sourceUrl = "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x"; // Channel link
     const contactName = commandeOptions?.ms?.pushName || "Unknown Contact"; // Sender's name or "Unknown Contact"
 
@@ -71,7 +71,7 @@ zokou(
         ptt: true, // Send as a voice note
         contextInfo: {
           externalAdReply: {
-            title: `🌟 Message from: ${contactName}\n🍊 active 🍆`, // Your contact in WhatsApp status format
+            title: `🌟 Message from: ${contactName}\n🪀 active 🤍`, // Your contact in WhatsApp status format
             body: "Yoh don't disturb am active🥱 Tap here",
             thumbnailUrl: smallThumbnailUrl, // Small thumbnail displayed below
             mediaType: 1, // Indicate this is an image
