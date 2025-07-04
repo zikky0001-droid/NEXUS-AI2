@@ -38,7 +38,7 @@ zokou({
 
   for (let contact of contacts) {
     await zk.sendMessage(contact, {
-      image: { url: 'https://files.catbox.moe/zdx7fj.jpg' },
+      image: { url: 'https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg' },
       caption: broadcastMessage
     });
   }
