@@ -28,7 +28,7 @@ zokou({
   try {
     await _0x6e67fd.sendMessage(_0x4d1cb2, {
       'audio': {
-        'url': "https://files.catbox.moe/mfhv0a.mp3"
+        'url': "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3"
       },
       'mimetype': "audio/mp4",
       'ptt': true,
@@ -43,7 +43,7 @@ zokou({
         'externalAdReply': {
           'title': "Bot Runtime",
           'body': " Uptime: " + runtime(process.uptime()),
-          'thumbnailUrl': "https://files.catbox.moe/ts2az9.jpg",
+          'thumbnailUrl': "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg",
           'sourceUrl': "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x",
           'mediaType': 0x1,
           'renderLargerThumbnail': true
