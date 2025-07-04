@@ -72,7 +72,7 @@ zokou({ nomCom: "logo", categorie: "Search", reaction: "✋" }, async (dest, zk,
       externalAdReply: {
         title: "🌟 NEXUS-AI ✨",
         body: "pkdriller✨",
-        thumbnailUrl: "https://files.catbox.moe/pdhcob.jpeg",
+        thumbnailUrl: "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/logo.png",
         sourceUrl: "https://whatsapp.com/channel/0029VasHgfG4tRrwjAUyTs10",
         mediaType: 1,
         renderLargerThumbnail: true,
