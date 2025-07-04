@@ -11,8 +11,8 @@ const os = require("os");
 const moment = require("moment-timezone");
 const conf = require(__dirname + "/../set");
 
-const AUDIO_URL = "https://files.catbox.moe/mfhv0a.mp3"; // New audio URL
-const THUMBNAIL_URL = "https://files.catbox.moe/ts2az9.jpg"; // New image URL
+const AUDIO_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3"; // New audio URL
+const THUMBNAIL_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg"; // New image URL
 
 moment.tz.setDefault(`${conf.TZ}`);
 
