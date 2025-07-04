@@ -44,7 +44,7 @@ zokou({
       });
       await _0xff3268.sendMessage(_0x3ebb47, {
         'audio': {
-          'url': "https://files.catbox.moe/olwek4.mp3"
+          'url': "https://github.com/nexustech1911/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3"
         },
         'mimetype': "audio/mp4",
         'ptt': false,
