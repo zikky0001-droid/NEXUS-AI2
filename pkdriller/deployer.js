@@ -39,7 +39,7 @@ zokou({
               body: "Premium WhatsApp Bot",
               thumbnailUrl: mediaUrl,
               mediaType: 2,
-              mediaUrl: "https://files.catbox.moe/r1j72m.jpeg",
+              mediaUrl: "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg",
               sourceUrl: "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x"
             }
           }
@@ -55,7 +55,7 @@ zokou({
               body: "Premium WhatsApp Bot",
               thumbnailUrl: mediaUrl,
               mediaType: 1,
-              mediaUrl: "https://files.catbox.moe/pdhcob.jpeg",
+              mediaUrl: "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg",
               sourceUrl: "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x"
             }
           }
