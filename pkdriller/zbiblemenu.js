@@ -131,7 +131,7 @@ let menuMsg = `
                 externalAdReply: {
                     title: "*NEXUS-AI* HOLY BIBLE LIST",
                     body: "Live with God my friends you don't know your tomorrow",
-                    thumbnailUrl: ".https://files.catbox.moe/pdhcob.jpeg",
+                    thumbnailUrl: "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/bible.jpeg",
                     sourceUrl: "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x",
                     mediaType: 1,
                     renderLargerThumbnail: true
