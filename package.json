@@ -109,7 +109,7 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node index.js"
+    "start": "node pkdriller.js"
   },
   "keywords": [
     "termux",
