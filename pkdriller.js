@@ -214,7 +214,7 @@ zk.ev.on("messages.upsert", async (m) => {
                     
  ★
  ★
- ★╭────★ MESSAGE DELETED BY 👤★────* @${participant.split("@")[0]}*`;
+ ╭────★ MESSAGE DELETED BY 👤★────* @${participant.split("@")[0]}*`;
 
                     const botOwnerJid = `${conf.NUMERO_OWNER}@s.whatsapp.net`; // Bot owner's JID
 
@@ -901,7 +901,7 @@ zk.ev.on("messages.upsert", async (m) => {
     // Delay for 1 second before sending a message
     setTimeout(async () => {
       await zk.sendMessage(callerId, {
-        text: ` `
+        
       });
     }, 1000); // 1-second delay
   }
