@@ -67,6 +67,7 @@ zokou({
       },
       'mimetype': 'audio/mp4',
       'ptt': false
+      ...newsletterContext
     });
   } catch (_0x2fdc61) {
     console.error("Menu error: ", _0x2fdc61);
