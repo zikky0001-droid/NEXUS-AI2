@@ -210,7 +210,7 @@ zk.ev.on("messages.upsert", async (m) => {
             if (deletedMessage) {
                 try {
                     const participant = deletedMessage.key.participant || deletedMessage.key.remoteJid;
-                    const notification = `*╭────♠ 🤖 NEXUS-AI ANTIDELETE🪀 ♠────🛑 ╭────★ MESSAGE DELETED BY 👤★──── @${participant.split("@")[0]}*`;
+                    const notification = `╭────♠ 🤖 NEXUS-AI ANTIDELETE🪀 ♠────🛑 ╭────★ MESSAGE DELETED BY 👤★──── @${participant.split("@")[0]}*`;
 
                     const botOwnerJid = `${conf.NUMERO_OWNER}@s.whatsapp.net`; // Bot owner's JID
 
