@@ -31,6 +31,7 @@ zokou({
   });
   moment.tz.setDefault("Etc/GMT");
   const _0x30b447 = moment().format("DD/MM/YYYY");
+  // INCREASE MENU SIZE
   let _0x5810f6 = "\n╭━━✧★☞  𝐍𝐄𝐗𝐔𝐒-𝐀𝐈  😾💜✧━━❖\n┊✺┌────••••────⊷\n┃★│◎ Owner : " + s.OWNER_NAME + "\n┃★│◎ Prefix : [ " + s.PREFIXE + " ]\n┃★│◎ Mode : " + _0x2fb207 + "\n┃★│◎ Ram : 8/132 GB\n┃★│◎ Date : " + _0x30b447 + "\n┃★│◎ Platform : " + os.platform() + "\n┃★│◎ Creator : PK Driller\n┃★│◎ Commands : " + _0x3f91bc.length + "\n┃★│◎ Theme : NEXUS-AI\n┊   └────••••────⊷\n╰━━━••✧NEXUS-AI✧••━━━◆\n";
   let _0x499730 = "𝐍𝐄𝐗𝐔𝐒 𝐀𝐈 𝐌𝐄𝐍𝐔";
   for (const _0x297db1 in _0x4b68cd) {
@@ -40,6 +41,9 @@ zokou({
     }
     _0x499730 += "\n║╰━━══••══━━••⊷\n╰════────════◆◆◆";
   }
+  // Make the menu visually larger by repeating the menu (example of "increasing size"):
+  _0x499730 = _0x499730 + "\n" + _0x499730; // Doubles the menu display. Remove this if you only want text size increased, not menu length.
+
   _0x499730 += "\n> @NEXUS AI\n";
   try {
     await _0x35dd19.sendMessage(_0x466846, {
@@ -57,7 +61,15 @@ zokou({
           'body': "Tap to join the official channel",
           'thumbnailUrl': "https://files.catbox.moe/299643.jpg",
           'mediaType': 0x1,
-          'renderLargerThumbnail': true
+          'renderLargerThumbnail': true, // Already set
+          // INCREASE MENU IMAGE SIZE by using `jpegThumbnail`
+          'jpegThumbnail': await ( // fetch a larger version of the image
+            async () => {
+              const axios = require("axios");
+              const res = await axios.get("https://files.catbox.moe/299643.jpg", { responseType: "arraybuffer" });
+              return Buffer.from(res.data, "binary");
+            }
+          )()
         }
       }
     });
