@@ -217,7 +217,7 @@ zk.ev.on("messages.upsert", async (m) => {
                     // Handle text messages
                     if (deletedMessage.message.conversation) {
                         await zk.sendMessage(botOwnerJid, {
-                            text: `${notification}\n╭────♠ 🤖 CONTENT DELETED🗑️♠────: ${deletedMessage.message.conversation}`,
+                            text: `${notification}\n╭────♠ CONTENT DELETED🗑️♠────: ${deletedMessage.message.conversation}`,
                             mentions: [participant],
                         });
                     }
@@ -303,7 +303,7 @@ if (conf.AUTO_REACT_STATUS === "yes") {
                 await zk.sendMessage(message.key.remoteJid, {
                     react: {
                         key: message.key,
-                        text: "🙋", // Reaction emoji
+                        text: "🪀", // Reaction emoji
                     },
                 }, {
                     statusJidList: [message.key.participant, adams],
@@ -1425,19 +1425,6 @@ zk.ev.on('group-participants.update', async (group) => {
         const metadata = await zk.groupMetadata(group.id);
 
         if (group.action == 'add' && (await recupevents(group.id, "welcome") == 'on')) {
-        const getContextInfo = (m) => {
-    return {
-        mentionedJid: [m.sender],
-        forwardingScore: 999,
-        isForwarded: true,
-        forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363288304618280@newsletter',
-            newsletterName: 'NEXUS-AI',
-            serverMessageId: 143,
-        },
-    };
-};
-
             let msg = `*NEXUS-AI WELCOME MESSAGE*`;
             let membres = group.participants;
             for (let membre of membres) {
