@@ -55,8 +55,8 @@ zokou({
         'externalAdReply': {
           'title': "NEXUS AI",
           'body': "Tap to join the official channel",
-          'thumbnailUrl': "https://files.catbox.moe/mya69s.jpg",
-          'mediaType': 0x1,
+          'thumbnailUrl': "https://files.catbox.moe/299643.jpg",
+          'mediaType': 0x4,
           'renderLargerThumbnail': true
         }
       }
