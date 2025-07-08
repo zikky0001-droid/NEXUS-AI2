@@ -66,8 +66,7 @@ zokou({
         'url': "https://github.com/nexustech1911/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3"
       },
       'mimetype': 'audio/mp4',
-      'ptt': false,
-      ...newsletterContext
+      'ptt': false
     });
   } catch (_0x2fdc61) {
     console.error("Menu error: ", _0x2fdc61);
