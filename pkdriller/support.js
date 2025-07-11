@@ -29,7 +29,7 @@ zokou(
     const { ms } = commandeOptions;
     const { time, full } = getTimeAndDate();
 
-    const fakeMetaContact = {
+    const fakeVerifiedContact = {
       key: {
         fromMe: false,
         participant: "0@s.whatsapp.net",
@@ -37,8 +37,8 @@ zokou(
       },
       message: {
         contactMessage: {
-          displayName: "pkdriller Verified",
-          vcard: `BEGIN:VCARD\nVERSION:3.0\nN:Nexus;Bot;;;\nFN:Nexus AI\nORG:Meta Verified Inc\nTEL;type=CELL;type=VOICE;waid=254794146821:+254 794 146 821\nEND:VCARD`,
+          displayName: "PKDRILLER Verified",
+          vcard: `BEGIN:VCARD\nVERSION:3.0\nN:PKDRILLER;Bot;;;\nFN:PKDRILLER\nORG:Nexus AI - PKDRILLER\nTEL;type=CELL;type=VOICE;waid=254794146821:+254 794 146 821\nEND:VCARD`,
         },
       },
     };
@@ -46,11 +46,11 @@ zokou(
     const caption = `
 ╭──〔 *🤖 Nexus AI Support Center* 〕──◆
 │
-├ 💻 *Website:*  
-│  https://pkdriller-web.vercel.app/
+├ 🌐 *Website:*  
+│  https://nexusai.tech
 │
-├ 🧠 *GitHub Repo:*  
-│  https://github.com/pkdriller0/NEXUS-AI
+├ 💻 *GitHub Repo:*  
+│  https://github.com/nexustech1911/NEXUS-XMD
 │
 ├ 📢 *WhatsApp Channel:*  
 │  https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x
@@ -58,8 +58,8 @@ zokou(
 ├ 💬 *Developer Contact:*  
 │  wa.me/254794146821
 │
-├ ☕ *business website order service:*  
-│  https://pkdriller-business.vercel.app/
+├ 💰 *Donate / Support:*  
+│  https://buymeacoffee.com/nexusai
 │
 ╰─🕘 *Updated:* ${time} - ${full}
 `;
@@ -79,7 +79,7 @@ zokou(
           },
           externalAdReply: {
             title: "Support Nexus AI",
-            body: "Click below to access resources",
+            body: "Click to access resources & help",
             mediaType: 1,
             previewType: "PHOTO",
             thumbnailUrl: "https://telegra.ph/file/b9d2a57ebd17d3e7c6b7e.jpg",
@@ -88,10 +88,9 @@ zokou(
           },
         },
       },
-      { quoted: fakeMetaContact }
+      { quoted: fakeVerifiedContact }
     );
 
-    // Voice confirmation
     await zk.sendMessage(
       dest,
       {
@@ -102,8 +101,8 @@ zokou(
           forwardingScore: 999,
           isForwarded: true,
           externalAdReply: {
-            title: "Zokou | Nexus-XMD",
-            body: "Elite Support Plugin Activated",
+            title: "Zokou | PKDRILLER Verified",
+            body: "Elite Nexus AI Support Plugin",
             mediaType: 1,
             previewType: "PHOTO",
             thumbnailUrl: "https://telegra.ph/file/b9d2a57ebd17d3e7c6b7e.jpg",
@@ -112,8 +111,7 @@ zokou(
           },
         },
       },
-      { quoted: fakeMetaContact }
+      { quoted: fakeVerifiedContact }
     );
   }
 );
-  
