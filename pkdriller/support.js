@@ -65,7 +65,7 @@ zokou(
             body: "Click below to access help center",
             mediaType: 1,
             previewType: "PHOTO",
-            thumbnailUrl: "https://telegra.ph/file/b9d2a57ebd17d3e7c6b7e.jpg",
+            thumbnailUrl: "https://files.catbox.moe/yptcae.jpg",
             renderLargerThumbnail: true,
             sourceUrl: conf.URL || "https://github.com/nexustech1911/NEXUS-XMD",
           },
@@ -84,7 +84,7 @@ zokou(
           forwardingScore: 999,
           isForwarded: true,
           externalAdReply: {
-            title: "Zokou | PKDRILLER Verified",
+            title: "NEXUS | PKDRILLER Verified",
             body: "Elite Nexus AI Support Plugin",
             mediaType: 1,
             previewType: "PHOTO",
