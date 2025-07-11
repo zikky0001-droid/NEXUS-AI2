@@ -55,7 +55,7 @@ zokou(
     await zk.sendMessage(
       dest,
       {
-        image: { url: "https://telegra.ph/file/b9d2a57ebd17d3e7c6b7e.jpg" },
+        image: { url: "http://files.catbox.moe/yptcae.jpg" },
         caption,
         contextInfo: {
           forwardingScore: 999,
@@ -88,7 +88,7 @@ zokou(
             body: "Elite Nexus AI Support Plugin",
             mediaType: 1,
             previewType: "PHOTO",
-            thumbnailUrl: "https://telegra.ph/file/b9d2a57ebd17d3e7c6b7e.jpg",
+            thumbnailUrl: "https://files.catbox.moe/yptcae.jpg",
             renderLargerThumbnail: true,
             sourceUrl: conf.URL || "https://github.com/nexustech1911/NEXUS-XMD",
           },
