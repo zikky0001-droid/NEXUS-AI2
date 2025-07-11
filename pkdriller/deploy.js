@@ -18,9 +18,6 @@ zokou({ nomCom: "deploy", categorie: "General" }, async (dest, zk, commandeOptio
         mode = "private";
     }
 
-
-    
-
     cm.map(async (com, index) => {
         if (!coms[com.categorie])
             coms[com.categorie] = [];
@@ -29,11 +26,11 @@ zokou({ nomCom: "deploy", categorie: "General" }, async (dest, zk, commandeOptio
 
     moment.tz.setDefault('Etc/GMT');
 
-// Créer une date et une heure en GMT
-const temps = moment().format('HH:mm:ss');
-const date = moment().format('DD/MM/YYYY');
+    // Créer une date et une heure en GMT
+    const temps = moment().format('HH:mm:ss');
+    const date = moment().format('DD/MM/YYYY');
 
-  let infoMsg =  `
+    let infoMsg =  `
 Hello ${nomAuteurMessage},,
 *DEPLOYMENT STEPS* 
 ╭───────────────────☆
@@ -54,34 +51,67 @@ Hello ${nomAuteurMessage},,
 ✔In some heroku apps the buld logs might not show but it will eventually deploy 
 ✔Now click on this devs number and give Nexus ai owner credits https://wa.me/254794146821
 ╰────────────────────☆`;
-let menuMsg = `
+
+    let menuMsg = `
      𝐑𝐞𝐠𝐚𝐫𝐝𝐬 dev pkdriller`;
-   var lien = mybotpic();
+    var lien = mybotpic();
 
-   if (lien.match(/\.(mp4|gif)$/i)) {
-    try {
-        zk.sendMessage(dest, { video: { url: lien }, caption:infoMsg + menuMsg, footer: "Je suis *nexus*, déveloper pkdriller" , gifPlayback : true }, { quoted: ms });
-    }
-    catch (e) {
+    // === YOUR FULL contextInfo BLOCK HERE ===
+    const contextInfo = {
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: '120363288304618280@newsletter',
+        newsletterName: "NEXUS-AI",
+        serverMessageId: 143,
+      },
+      forwardingScore: 999, // Score to indicate it has been forwarded
+      externalAdReply: {
+        title: "PkDriller",
+        thumbnailUrl: 'https://files.catbox.moe/bkv0b4.jpg', // Add thumbnail URL if required 
+        sourceUrl: 'https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x', // Add source URL if necessary
+        mediaType: 1,
+        renderLargerThumbnail: true
+      },
+    };
+
+    if (lien.match(/\.(mp4|gif)$/i)) {
+      try {
+        zk.sendMessage(
+          dest,
+          {
+            video: { url: lien },
+            caption: infoMsg + menuMsg,
+            footer: "Je suis *nexus*, déveloper pkdriller",
+            gifPlayback: true,
+            contextInfo: contextInfo // Inserted here
+          },
+          { quoted: ms }
+        );
+      }
+      catch (e) {
         console.log("🥵🥵 Menu erreur " + e);
         repondre("🥵🥵 Menu erreur " + e);
+      }
     }
-} 
-// Vérification pour .jpeg ou .png
-else if (lien.match(/\.(jpeg|png|jpg)$/i)) {
-    try {
-        zk.sendMessage(dest, { image: { url: lien }, caption:infoMsg + menuMsg, footer: "Je suis *nexus*, déveloper pkdriller" }, { quoted: ms });
-    }
-    catch (e) {
+    else if (lien.match(/\.(jpeg|png|jpg)$/i)) {
+      try {
+        zk.sendMessage(
+          dest,
+          {
+            image: { url: lien },
+            caption: infoMsg + menuMsg,
+            footer: "Je suis *nexus*, déveloper pkdriller",
+            contextInfo: contextInfo // Inserted here
+          },
+          { quoted: ms }
+        );
+      }
+      catch (e) {
         console.log("🥵🥵 Menu erreur " + e);
         repondre("🥵🥵 Menu erreur " + e);
+      }
     }
-} 
-else {
-    
-    repondre(infoMsg + menuMsg);
-    
-}
-
-}); 
-
+    else {
+      repondre(infoMsg + menuMsg);
+    }
+});
