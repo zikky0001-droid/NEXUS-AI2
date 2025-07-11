@@ -67,7 +67,7 @@ Hello ${nomAuteurMessage},,
       forwardingScore: 999, // Score to indicate it has been forwarded
       externalAdReply: {
         title: "PkDriller",
-        thumbnailUrl: '', // Add thumbnail URL if required 
+        thumbnailUrl: 'https://files.catbox.moe/2v00me.jpg', // Add thumbnail URL if required 
         sourceUrl: 'https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x', // Add source URL if necessary
         mediaType: 1,
         renderLargerThumbnail: false
