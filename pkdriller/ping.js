@@ -1,63 +1,77 @@
-
-
-
-
-
-const util = require('util');
-const fs = require('fs-extra');
-const axios = require('axios');
-const { zokou } = require(__dirname + "/../framework/zokou");
+const util = require("util");
+const fs = require("fs-extra");
+const axios = require("axios");
+const { zokou } = require("../framework/zokou");
 const os = require("os");
 const moment = require("moment-timezone");
-const conf = require(__dirname + "/../set");
+const conf = require("../set");
 
-const AUDIO_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3"; // New audio URL
-const THUMBNAIL_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg"; // New image URL
+moment.tz.setDefault(conf.TZ);
 
-moment.tz.setDefault(`${conf.TZ}`);
+const AUDIO_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3";
 
-const getTimeAndDate = () => {
-    return {
-        time: moment().format('HH:mm:ss'),
-        date: moment().format('DD/MM/YYYY')
+// Helper function
+function getTimeAndDate() {
+  const now = moment();
+  return {
+    time: now.format("HH:mm:ss"),
+    date: now.format("YYYY-MM-DD"),
+    full: now.format("dddd, MMMM Do YYYY"),
+  };
+}
+
+zokou(
+  {
+    nomCom: "ping",
+    categorie: "Core",
+  },
+  async (dest, zk, commandeOptions) => {
+    const { ms } = commandeOptions;
+    const { time, full } = getTimeAndDate();
+
+    const fakeMetaContact = {
+      key: {
+        fromMe: false,
+        participant: "0@s.whatsapp.net",
+        remoteJid: "status@broadcast",
+      },
+      message: {
+        contactMessage: {
+          displayName: "Meta Verified",
+          vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;Meta;;;\nFN:Meta\nORG:Meta Verified Inc\nTEL;type=CELL;type=VOICE;waid=1234567890:+1 234 567 890\nEND:VCARD`,
+        },
+      },
     };
-};
 
-// Ping Command
-zokou({ nomCom: "ping", categorie: "General" }, async (dest, zk, commandeOptions) => {
-    let { ms } = commandeOptions;
-    const { time, date } = getTimeAndDate();
-    const ping = Math.floor(Math.random() * 1000) + 1; // Generate a random ping between 1ms - 100ms
-
-    try {
-    await zk.sendMessage(dest, {
-        audio: { url: AUDIO_URL }, 
-            mimetype: 'audio/mp4', 
-            ptt: true, // Voice note form
-      text: `Pong...: ${ping}ms\n🎧💻`,
-      contextInfo: {
-        forwardingScore: 999,
-            isForwarded: true,
-            forwardedNewsletterMessageInfo: {
-              newsletterJid: '120363288304618280@newsletter',
-              newsletterName: 'NEXUS-AI',
-              serverMessageId: 143},
-        externalAdReply: {
+    await zk.sendMessage(
+      dest,
+      {
+        audio: {
+          url: AUDIO_URL,
+        },
+        mimetype: "audio/mp4",
+        ptt: true,
+        contextInfo: {
+          forwardingScore: 999,
+          isForwarded: true,
+          forwardedNewsletterMessageInfo: {
+            newsletterJid: "120363288304618280@newsletter",
+            newsletterName: "Nexus System",
+            serverMessageId: "",
+          },
+          externalAdReply: {
+            title: "Zokou Ping System",
+            body: `✅ ${time} | ${full}`,
+            mediaType: 1,
+            previewType: "PHOTO",
+            renderLargerThumbnail: true,
+            thumbnailUrl: "https://telegra.ph/file/7a89e20f59d6d3ff975eb.jpg",
+            sourceUrl: conf.URL || "https://github.com/nexustech1911/NEXUS-XMD",
+          },
+        },
+      },
+      { quoted: fakeMetaContact }
+    );
+  }
+);
           
-          title: "Follow for updates 💙",
-      body: "Enjoy...",
-      thumbnailUrl: conf.URL,
-          sourceUrl: conf.GURL,
-          mediaType: 1,
-          
-        }
-      }
-    }, { quoted: ms });
-
-    await zk.sendMessage(dest, {
-    } ,{ quoted: ms });// Voice note form
-    }catch (e) {
-        console.log("❌ Ping Command Error: " + e);
-        repondre("❌ Error: " + e);
-    }
-});
