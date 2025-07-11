@@ -10,7 +10,6 @@ moment.tz.setDefault(conf.TZ);
 
 const AUDIO_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3";
 
-// Helper
 function getTimeAndDate() {
   const now = moment();
   return {
@@ -29,7 +28,7 @@ zokou(
     const { ms } = commandeOptions;
     const { time, full } = getTimeAndDate();
 
-    const fakeVerifiedContact = {
+    const quotedContact = {
       key: {
         fromMe: false,
         participant: "0@s.whatsapp.net",
@@ -46,23 +45,12 @@ zokou(
     const caption = `
 ╭──〔 *🤖 Nexus AI Support Center* 〕──◆
 │
-├ 🌐 *Website:*  
-│  https://nexusai.tech
-│
-├ 💻 *GitHub Repo:*  
-│  https://github.com/nexustech1911/NEXUS-XMD
-│
-├ 📢 *WhatsApp Channel:*  
-│  https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x
-│
-├ 💬 *Developer Contact:*  
-│  wa.me/254794146821
-│
-├ 💰 *Donate / Support:*  
-│  https://buymeacoffee.com/nexusai
-│
-╰─🕘 *Updated:* ${time} - ${full}
-`;
+├ 🌐 *Website:*  https://nexusai.tech
+├ 💻 *GitHub:*    https://github.com/nexustech1911/NEXUS-XMD
+├ 📢 *Channel:*   https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x
+├ 💬 *Contact:*   wa.me/254794146821
+├ 💰 *Support:*   https://buymeacoffee.com/nexusai
+╰─🕘 *Updated:* ${time} - ${full}`;
 
     await zk.sendMessage(
       dest,
@@ -72,14 +60,9 @@ zokou(
         contextInfo: {
           forwardingScore: 999,
           isForwarded: true,
-          forwardedNewsletterMessageInfo: {
-            newsletterJid: "120363025076860999@newsletter",
-            newsletterName: "Zokou Engine",
-            serverMessageId: "",
-          },
           externalAdReply: {
             title: "Support Nexus AI",
-            body: "Click to access resources & help",
+            body: "Click below to access help center",
             mediaType: 1,
             previewType: "PHOTO",
             thumbnailUrl: "https://telegra.ph/file/b9d2a57ebd17d3e7c6b7e.jpg",
@@ -88,7 +71,7 @@ zokou(
           },
         },
       },
-      { quoted: fakeVerifiedContact }
+      { quoted: quotedContact }
     );
 
     await zk.sendMessage(
@@ -107,11 +90,12 @@ zokou(
             previewType: "PHOTO",
             thumbnailUrl: "https://telegra.ph/file/b9d2a57ebd17d3e7c6b7e.jpg",
             renderLargerThumbnail: true,
-            sourceUrl: conf.URL,
+            sourceUrl: conf.URL || "https://github.com/nexustech1911/NEXUS-XMD",
           },
         },
       },
-      { quoted: fakeVerifiedContact }
+      { quoted: quotedContact }
     );
   }
 );
+        
