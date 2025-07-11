@@ -47,9 +47,9 @@ zokou(
 │
 ├ 🌐 *Website:*  https://nexusai.tech
 ├ 💻 *GitHub:*    https://github.com/nexustech1911/NEXUS-XMD
-├ 📢 *Channel:*   https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x
+├ 📢 *Channel:*   
 ├ 💬 *Contact:*   wa.me/254794146821
-├ 💰 *Support:*   https://buymeacoffee.com/nexusai
+├ 💰 *Support:*   
 ╰─🕘 *Updated:* ${time} - ${full}`;
 
     await zk.sendMessage(
