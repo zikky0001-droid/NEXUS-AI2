@@ -1,59 +1,66 @@
-const {
-  zokou
-} = require("../framework/zokou");
-const runtime = function (_0x28ca1c) {
-  _0x28ca1c = Number(_0x28ca1c);
-  var _0x268c3d = Math.floor(_0x28ca1c / 86400);
-  var _0x345b56 = Math.floor(_0x28ca1c % 86400 / 3600);
-  var _0x239dce = Math.floor(_0x28ca1c % 3600 / 60);
-  var _0x206c14 = Math.floor(_0x28ca1c % 60);
-  var _0x19d16e = _0x268c3d > 0 ? _0x268c3d + (_0x268c3d == 1 ? " day, " : " d, ") : '';
-  var _0x49ce9c = _0x345b56 > 0 ? _0x345b56 + (_0x345b56 == 1 ? " hour, " : " h, ") : '';
-  var _0x249a90 = _0x239dce > 0 ? _0x239dce + (_0x239dce == 1 ? " minute, " : " m, ") : '';
-  var _0x12266c = _0x206c14 > 0 ? _0x206c14 + (_0x206c14 == 1 ? " second" : " s") : '';
-  return _0x19d16e + _0x49ce9c + _0x249a90 + _0x12266c;
+const util = require('util');
+const fs = require('fs-extra');
+const axios = require('axios');
+const { zokou } = require(__dirname + "/../framework/zokou");
+const os = require("os");
+const moment = require("moment-timezone");
+const conf = require(__dirname + "/../set");
+
+const AUDIO_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3";
+const THUMBNAIL_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg";
+
+moment.tz.setDefault(`${conf.TZ}`);
+
+const getTimeAndDate = () => {
+    return {
+        time: moment().format('HH:mm:ss'),
+        date: moment().format('DD/MM/YYYY')
+    };
 };
-zokou({
-  'nomCom': "uptime",
-  'desc': "To check runtime",
-  'Categorie': "General",
-  'reaction': '↖️',
-  'fromMe': "true"
-}, async (_0x4d1cb2, _0x6e67fd, _0x17c78a) => {
-  const {
-    ms: _0x42d661,
-    arg: _0x32ab8b,
-    repondre: _0x1e9691
-  } = _0x17c78a;
-  try {
-    await _0x6e67fd.sendMessage(_0x4d1cb2, {
-      'audio': {
-        'url': "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3"
-      },
-      'mimetype': "audio/mp4",
-      'ptt': true,
-      'contextInfo': {
-        'isForwarded': true,
-        'forwardedNewsletterMessageInfo': {
-          'newsletterJid': "120363288304618280@newsletter",
-          'newsletterName': "NEXUS-AI",
-          'serverMessageId': 0x8f
-        },
-        'forwardingScore': 0x3e7,
-        'externalAdReply': {
-          'title': "Bot Runtime",
-          'body': " Uptime: " + runtime(process.uptime()),
-          'thumbnailUrl': "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg",
-          'sourceUrl': "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x",
-          'mediaType': 0x1,
-          'renderLargerThumbnail': true
-        }
-      }
-    }, {
-      'quoted': _0x42d661
-    });
-  } catch (_0x141e7b) {
-    console.log("❌ uptime Command Error: " + _0x141e7b);
-    _0x1e9691("❌ Error: " + _0x141e7b);
-  }
+
+const formatUptime = (seconds) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h}h ${m}m ${s}s`;
+};
+
+zokou({ nomCom: "uptime", categorie: "Tools" }, async (dest, zk, commandeOptions) => {
+    let { ms } = commandeOptions;
+    const { time, date } = getTimeAndDate();
+    const uptime = process.uptime();
+
+    try {
+        await zk.sendMessage(dest, {
+            text: `⏳ *Bot Uptime*\n\n🔁 Uptime: *${formatUptime(Math.floor(uptime))}*\n📅 Date: ${date}\n🕓 Time: ${time}`,
+            contextInfo: {
+                forwardingScore: 999,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363288304618280@newsletter',
+                    newsletterName: 'NEXUS-AI',
+                    serverMessageId: 143
+                },
+                externalAdReply: {
+                    title: "Bot Uptime Monitor",
+                    body: "Check how long Nexus bot has been active.",
+                    thumbnailUrl: THUMBNAIL_URL,
+                    mediaType: 1,
+                    renderLargerThumbnail: true,
+                    sourceUrl: conf.GURL
+                }
+            }
+        }, { quoted: ms });
+
+        await zk.sendMessage(dest, {
+            audio: { url: AUDIO_URL },
+            mimetype: 'audio/mp4',
+            ptt: true
+        }, { quoted: ms });
+
+    } catch (e) {
+        console.log("❌ Uptime Command Error: " + e);
+        await zk.sendMessage(dest, { text: "❌ Error in uptime command." }, { quoted: ms });
+    }
 });
+                       
