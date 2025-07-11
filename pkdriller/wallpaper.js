@@ -8,6 +8,7 @@ const conf = require(__dirname + "/../set");
 
 const AUDIO_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3";
 const THUMBNAIL_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg";
+
 moment.tz.setDefault(`${conf.TZ}`);
 
 const getTimeAndDate = () => {
@@ -18,16 +19,18 @@ const getTimeAndDate = () => {
 };
 
 zokou({ nomCom: "wallpaper", categorie: "Media" }, async (dest, zk, commandeOptions) => {
-    const { ms } = commandeOptions;
+    const { ms, arg } = commandeOptions;
     const { time, date } = getTimeAndDate();
+    const keyword = arg.length > 0 ? arg.join(" ") : "wallpaper,nature,art,abstract";
 
     try {
-        const res = await axios.get(`https://source.unsplash.com/1080x1920/?wallpaper,nature,art,abstract`);
+        const encoded = encodeURIComponent(keyword);
+        const res = await axios.get(`https://source.unsplash.com/1080x1920/?${encoded}`);
         const imageUrl = res.request.res.responseUrl;
 
         await zk.sendMessage(dest, {
             image: { url: imageUrl },
-            caption: `🖼️ *Random Wallpaper Delivered!*\n\n📅 *Date:* ${date}\n⏰ *Time:* ${time}\n🔗 *Source:* Unsplash`,
+            caption: `🖼️ *Wallpaper Found!*\n\n🎯 *Search:* ${keyword}\n📅 *Date:* ${date}\n⏰ *Time:* ${time}\n🔗 *Source:* Unsplash`,
             contextInfo: {
                 forwardingScore: 999,
                 isForwarded: true,
@@ -37,8 +40,8 @@ zokou({ nomCom: "wallpaper", categorie: "Media" }, async (dest, zk, commandeOpti
                     serverMessageId: 143
                 },
                 externalAdReply: {
-                    title: "Your Wallpaper Drop 🎨",
-                    body: "NEXUS-AI brings HD wallpapers",
+                    title: `Wallpaper: ${keyword}`,
+                    body: "HD wallpaper delivered by Nexus-AI",
                     thumbnailUrl: THUMBNAIL_URL,
                     mediaType: 1,
                     renderLargerThumbnail: true,
@@ -58,4 +61,4 @@ zokou({ nomCom: "wallpaper", categorie: "Media" }, async (dest, zk, commandeOpti
         await zk.sendMessage(dest, { text: "❌ Failed to fetch wallpaper." }, { quoted: ms });
     }
 });
-  
+                  
