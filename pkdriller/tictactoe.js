@@ -15,10 +15,29 @@ zokou({
     arg: _0x13f50e,
     idBot: _0xc37cda
   } = _0x5f5331;
+
+  // Common contextInfo for all message sends
+  const contextInfo = {
+    isForwarded: true,
+    forwardedNewsletterMessageInfo: {
+      newsletterJid: '120363288304618280@newsletter',
+      newsletterName: "NEXUS-AI",
+      serverMessageId: 143,
+    },
+    forwardingScore: 999,
+    externalAdReply: {
+      title: "PkDriller",
+      sourceUrl: "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x",
+      mediaType: 1,
+      renderLargerThumbnail: false
+    }
+  };
+
   if (_0x42d3ab) {
     _0x34cd39.sendMessage(_0x322626, {
       'text': '@' + _0x52bc7e.split('@')[0x0] + " invites @" + _0x30c2ec.split('@')[0x0] + " to play Tic-Tac-Toe. To accept the challenge, type 'yes'.",
-      'mentions': [_0x52bc7e, _0x30c2ec]
+      'mentions': [_0x52bc7e, _0x30c2ec],
+      contextInfo
     });
     try {
       const _0x4c52c4 = await _0x34cd39.awaitForMessage({
@@ -34,7 +53,8 @@ zokou({
           let _0x485404 = "Current board:\n" + _0x53ba84.map(_0x10f832 => _0x10f832.join(" | ")).join("\n---|---|---\n") + "\n\n@" + _0x4e390e.split('@')[0x0] + ", make your move (choose a number from the board).";
           _0x34cd39.sendMessage(_0x322626, {
             'text': _0x485404,
-            'mentions': [_0x4e390e]
+            'mentions': [_0x4e390e],
+            contextInfo
           });
           const _0x454e45 = await _0x34cd39.awaitForMessage({
             'sender': _0x4e390e,
@@ -50,13 +70,15 @@ zokou({
             if (checkWin(_0x53ba84, _0x4e390e === _0x52bc7e ? 'X' : 'O')) {
               _0x34cd39.sendMessage(_0x322626, {
                 'text': "Player @" + _0x4e390e.split('@')[0x0] + " wins!",
-                'mentions': [_0x52bc7e, _0x30c2ec]
+                'mentions': [_0x52bc7e, _0x30c2ec],
+                contextInfo
               });
               _0x3649f4 = true;
             } else if (_0x53ba84.flat().every(_0x34f282 => _0x34f282 === 'X' || _0x34f282 === 'O')) {
               _0x34cd39.sendMessage(_0x322626, {
                 'text': "The game is a draw!",
-                'mentions': [_0x52bc7e, _0x30c2ec]
+                'mentions': [_0x52bc7e, _0x30c2ec],
+                contextInfo
               });
               _0x3649f4 = true;
             } else {
@@ -65,7 +87,8 @@ zokou({
           } else {
             _0x34cd39.sendMessage(_0x322626, {
               'text': "Invalid move. Please choose a number from the board.",
-              'mentions': [_0x4e390e]
+              'mentions': [_0x4e390e],
+              contextInfo
             });
           }
         }
@@ -76,7 +99,8 @@ zokou({
       if (_0x36914a.message === "Timeout") {
         _0x34cd39.sendMessage(_0x322626, {
           'text': '@' + _0x30c2ec.split('@')[0x0] + " took too long to respond. Game canceled.",
-          'mentions': [_0x52bc7e, _0x30c2ec]
+          'mentions': [_0x52bc7e, _0x30c2ec],
+          contextInfo
         });
       } else {
         console.error(_0x36914a);
@@ -86,7 +110,8 @@ zokou({
     _0x1a5b7e("Tic-Tac-Toe is a game for two players. Mention a friend to invite them.");
   }
 });
+
 function checkWin(_0x57e57a, _0x5a5651) {
   const _0x305400 = [[0x0, 0x1, 0x2], [0x3, 0x4, 0x5], [0x6, 0x7, 0x8], [0x0, 0x3, 0x6], [0x1, 0x4, 0x7], [0x2, 0x5, 0x8], [0x0, 0x4, 0x8], [0x2, 0x4, 0x6]];
   return _0x305400.some(_0x41f141 => _0x41f141.every(_0x258db2 => _0x57e57a[Math.floor(_0x258db2 / 0x3)][_0x258db2 % 0x3] === _0x5a5651));
-    }
+            }
