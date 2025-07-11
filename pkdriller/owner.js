@@ -1,58 +1,55 @@
-const { zokou } = require("../framework/zokou"); const {getAllSudoNumbers,isSudoTableNotEmpty} = require("../luckydatabase/sudo") const conf = require("../set");
+const util = require('util');
+const fs = require('fs-extra');
+const axios = require('axios');
+const { zokou } = require(__dirname + "/../framework/zokou");
+const os = require("os");
+const moment = require("moment-timezone");
+const conf = require(__dirname + "/../set");
 
-zokou({ nomCom: "owner", categorie: "Devs", reaction: "🚜" }, async (dest, zk, commandeOptions) => { const { ms , mybotpic } = commandeOptions;
+const AUDIO_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3";
+const THUMBNAIL_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg";
 
-const thsudo = await isSudoTableNotEmpty()
+moment.tz.setDefault(`${conf.TZ}`);
 
-if (thsudo) { let msg = `My Super-User\n Owner Number\n :
+const getTimeAndDate = () => {
+  return {
+    time: moment().format('HH:mm:ss'),
+    date: moment().format('DD/MM/YYYY')
+  };
+};
 
-😎 @${conf.NUMERO_OWNER}
+zokou({ nomCom: "owner", categorie: "General" }, async (dest, zk, commandeOptions) => {
+  let { ms } = commandeOptions;
+  const { time, date } = getTimeAndDate();
 
+  const text = `👑 *Bot Owner Info*\n\n📛 Name: PK-DRILLER\n📱 Number: wa.me/254794146821\n🌐 GitHub: https://github.com/pkdriller0`;
 
------- other sudos -----\n`
+  try {
+    await zk.sendMessage(dest, {
+      audio: { url: AUDIO_URL },
+      mimetype: 'audio/mp4',
+      ptt: true,
+      contextInfo: {
+        forwardingScore: 999,
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: '120363288304618280@newsletter',
+          newsletterName: 'NEXUS-AI',
+          serverMessageId: 143
+        },
+        externalAdReply: {
+          title: "Meet the Developer 🔧",
+          body: "PK-DRILLER 👑",
+          thumbnailUrl: conf.URL,
+          sourceUrl: conf.GURL,
+          mediaType: 1,
+        }
+      }
+    }, { quoted: ms });
 
-let sudos = await getAllSudoNumbers()
+    await zk.sendMessage(dest, { text }, { quoted: ms });
 
-for ( const sudo of sudos) { if (sudo) { sudonumero = sudo.replace(/[^0-9]/g, ''); msg += - 💼 @${sudonumero}\n; } else {return}
-
-}   const ownerjid = conf.NUMERO_OWNER.replace(/[^0-9]/g) + "@s.whatsapp.net"; const mentionedJid = sudos.concat([ownerjid]) console.log(sudos); console.log(mentionedJid) zk.sendMessage( dest, { image : { url : mybotpic() }, caption : msg, mentions : mentionedJid } ) } else { const vcard = 'BEGIN:VCARD\n' + 'VERSION:3.0\n' + 'FN:' + conf.OWNER_NAME + '\n' + 'ORG:undefined;\n' + 'TEL;type=CELL;type=VOICE;waid=' + conf.NUMERO_OWNER + ':+' + conf.NUMERO_OWNER + '\n' + 'END:VCARD'; zk.sendMessage(dest, { contacts: { displayName: conf.OWNER_NAME, contacts: [{ vcard }], }, },{quoted:ms}); } });
-
-zokou({ nomCom: "dev", categorie: "Devs", reaction: "🚜" }, async (dest, zk, commandeOptions) => { const { ms, mybotpic } = commandeOptions;
-
-const devs = [
-  { nom: "PkDriller", numero: "254785392165" },
-  { nom: "pkdriller", numero: "254702221671" },
-];
-
-let message = "Uuhh Hellow These are the Dev's Contacts:\n\n";
-for (const dev of devs) {
-  message += `----------------\n• ${dev.nom} : https://wa.me/${dev.numero}\n`;
-}
-
-var lien = mybotpic() if (lien.match(/.(mp4|gif)$/i)) { try { zk.sendMessage(dest, { video: { url: lien }, caption:message }, { quoted: ms }); } catch (e) { console.log("🥵🥵 Menu erreur " + e); repondre("🥵🥵 Menu erreur " + e); } } else if (lien.match(/.(jpeg|png|jpg)$/i)) { try { zk.sendMessage(dest, { image: { url: lien }, caption:message }, { quoted: ms }); } catch (e) { console.log("🥵🥵 Menu erreur " + e); repondre("🥵🥵 Menu erreur " + e); } } else { repondre(lien) repondre("link error");
-
-} });
-
-zokou({ nomCom: "support", categorie: "Devs" }, async (dest, zk, commandeOptions) => { const { ms, repondre, auteurMessage, } = commandeOptions;
-
-repondre("look on pm sir ") await zk.sendMessage(auteurMessage,{text :https://whatsapp.com/channel/0029VaihcQv84Om8LP59fO3f},{quoted :ms})
-
-})
-
-zokou({ nomCom: "developer", categorie: "General", reaction: "🚜" }, async (dest, zk, commandeOptions) => { const { ms, mybotpic } = commandeOptions;
-
-const devs = [
-  { nom: "PkDriller", numero: "254785392165" },
-  { nom: "pkdriller", numero: "254702221671" },
-];
-
-let message = "*Holla Welcome to Queen-M here is the developer numbers:*\n\n";
-for (const dev of devs) {
-  message += `----------------\n• ${dev.nom} : https://wa.me/${dev.numero}\n`;
-}
-
-var lien = mybotpic() if (lien.match(/.(mp4|gif)$/i)) { try { zk.sendMessage(dest, { video: { url: lien }, caption:message }, { quoted: ms }); } catch (e) { console.log("🥵🥵 Menu erreur " + e); repondre("🥵🥵 Menu erreur " + e); } } else if (lien.match(/.(jpeg|png|jpg)$/i)) { try { zk.sendMessage(dest, { image: { url: lien }, caption:message }, { quoted: ms }); } catch (e) { console.log("🥵🥵 Menu erreur " + e); repondre("🥵🥵 Menu erreur " + e); } } else { repondre(lien) repondre("link error");
-
-} });
-
-                                                                                                         
+  } catch (e) {
+    console.log("❌ Owner Info Error:", e);
+  }
+});
