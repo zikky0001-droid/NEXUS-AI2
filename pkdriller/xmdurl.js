@@ -4,6 +4,7 @@ const { downloadMediaMessage } = require('@whiskeysockets/baileys');
 const fs = require("fs-extra");
 const ffmpeg = require("fluent-ffmpeg");
 const { Catbox } = require('node-catbox');
+const conf = require("../set");
 
 const catbox = new Catbox();
 
@@ -13,12 +14,9 @@ async function uploadToCatbox(Path) {
     }
 
     try {
-        const response = await catbox.uploadFile({
-            path: Path // Provide the path to the file
-        });
-
+        const response = await catbox.uploadFile({ path: Path });
         if (response) {
-            return response; // returns the uploaded file URL
+            return response;
         } else {
             throw new Error("Error retrieving the file link");
         }
@@ -37,72 +35,154 @@ async function convertToMp3(inputPath, outputPath) {
     });
 }
 
-zokou({ nomCom: "url", categorie: "General", reaction: "💗" }, async (origineMessage, zk, commandeOptions) => {
-    const { msgRepondu, repondre } = commandeOptions;
+zokou({ nomCom: "url", categorie: "General", reaction: "💗" }, async (dest, zk, commandeOptions) => {
+    const { ms, msgRepondu, repondre } = commandeOptions;
 
     if (!msgRepondu) {
-        repondre('Please reply to an image, video, or audio file.');
+        await zk.sendMessage(dest, {
+            text: 'Please reply to an image, video, or audio file.',
+            contextInfo: {
+                forwardingScore: 9999,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: "120363288304618280@newsletter",
+                    serverMessageId: "",
+                },
+                externalAdReply: {
+                    title: "Nexus URL Generator",
+                    body: "nexus Bot by PK-DRILLER",
+                    thumbnailUrl: conf.LOGO,
+                    mediaType: 1,
+                    mediaUrl: conf.URL,
+                    sourceUrl: conf.GURL,
+                    renderLargerThumbnail: true,
+                    showAdAttribution: true,
+                },
+                mentionedJid: [],
+            }
+        }, { quoted: ms });
         return;
     }
 
     let mediaPath, mediaType;
 
-    if (msgRepondu.videoMessage) {
-        const videoSize = msgRepondu.videoMessage.fileLength;
-
-        if (videoSize > 50 * 1024 * 1024) {
-            repondre('The video is too long. Please send a smaller video.');
-            return;
-        }
-
-        mediaPath = await zk.downloadAndSaveMediaMessage(msgRepondu.videoMessage);
-        mediaType = 'video';
-    } else if (msgRepondu.imageMessage) {
-        mediaPath = await zk.downloadAndSaveMediaMessage(msgRepondu.imageMessage);
-        mediaType = 'image';
-    } else if (msgRepondu.audioMessage) {
-        mediaPath = await zk.downloadAndSaveMediaMessage(msgRepondu.audioMessage);
-        mediaType = 'audio';
-
-        const outputPath = `${mediaPath}.mp3`;
-
-        try {
-            // Convert audio to MP3 format
-            await convertToMp3(mediaPath, outputPath);
-            fs.unlinkSync(mediaPath); // Remove the original audio file
-            mediaPath = outputPath; // Update the path to the converted MP3 file
-        } catch (error) {
-            console.error("Error converting audio to MP3:", error);
-            repondre('Failed to process the audio file.');
-            return;
-        }
-    } else {
-        repondre('Unsupported media type. Reply with an image, video, or audio file.');
-        return;
-    }
-
     try {
-        const catboxUrl = await uploadToCatbox(mediaPath);
-        fs.unlinkSync(mediaPath); // Remove the local file after uploading
+        if (msgRepondu.videoMessage) {
+            const videoSize = msgRepondu.videoMessage.fileLength;
+            if (videoSize > 50 * 1024 * 1024) {
+                await zk.sendMessage(dest, {
+                    text: 'The video is too long. Please send a smaller video.',
+                    contextInfo: {
+                        forwardingScore: 9999,
+                        isForwarded: true,
+                        forwardedNewsletterMessageInfo: {
+                            newsletterJid: "120363217992979508@newsletter",
+                            serverMessageId: "",
+                        },
+                        externalAdReply: {
+                            title: "Nexus URL Generator",
+                            body: "nexus Bot by PK-DRILLER",
+                            thumbnailUrl: conf.LOGO,
+                            mediaType: 1,
+                            mediaUrl: conf.URL,
+                            sourceUrl: conf.GURL,
+                            renderLargerThumbnail: true,
+                            showAdAttribution: true,
+                        },
+                        mentionedJid: [],
+                    }
+                }, { quoted: ms });
+                return;
+            }
+            mediaPath = await zk.downloadAndSaveMediaMessage(msgRepondu.videoMessage);
+            mediaType = 'video';
+        } else if (msgRepondu.imageMessage) {
+            mediaPath = await zk.downloadAndSaveMediaMessage(msgRepondu.imageMessage);
+            mediaType = 'image';
+        } else if (msgRepondu.audioMessage) {
+            mediaPath = await zk.downloadAndSaveMediaMessage(msgRepondu.audioMessage);
+            mediaType = 'audio';
 
-        // Respond with the URL based on media type
-        switch (mediaType) {
-            case 'image':
-                repondre(`Nexus  url: ${catboxUrl}`);
-                break;
-            case 'video':
-                repondre(`Nexus  url: ${catboxUrl}`);
-                break;
-            case 'audio':
-                repondre(`Nexus  url: ${catboxUrl}`);
-                break;
-            default:
-                repondre('An unknown error occurred.');
-                break;
+            const outputPath = `${mediaPath}.mp3`;
+            await convertToMp3(mediaPath, outputPath);
+            fs.unlinkSync(mediaPath);
+            mediaPath = outputPath;
+        } else {
+            await zk.sendMessage(dest, {
+                text: 'Unsupported media type. Reply with an image, video, or audio file.',
+                contextInfo: {
+                    forwardingScore: 9999,
+                    isForwarded: true,
+                    forwardedNewsletterMessageInfo: {
+                        newsletterJid: "120363288304618280@newsletter",
+                        serverMessageId: "",
+                    },
+                    externalAdReply: {
+                        title: "Nexus URL Generator",
+                        body: "nexus Bot by PK-DRILLER",
+                        thumbnailUrl: conf.LOGO,
+                        mediaType: 1,
+                        mediaUrl: conf.URL,
+                        sourceUrl: conf.GURL,
+                        renderLargerThumbnail: true,
+                        showAdAttribution: true,
+                    },
+                    mentionedJid: [],
+                }
+            }, { quoted: ms });
+            return;
         }
+
+        const catboxUrl = await uploadToCatbox(mediaPath);
+        fs.unlinkSync(mediaPath);
+
+        await zk.sendMessage(dest, {
+            text: `Nexus url: ${catboxUrl}`,
+            contextInfo: {
+                forwardingScore: 9999,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: "120363288304618280@newsletter",
+                    serverMessageId: "",
+                },
+                externalAdReply: {
+                    title: "Click to open URL",
+                    body: "Uploaded via Nexus Bot",
+                    thumbnailUrl: conf.LOGO,
+                    mediaType: 1,
+                    mediaUrl: conf.URL,
+                    sourceUrl: catboxUrl,
+                    renderLargerThumbnail: true,
+                    showAdAttribution: true,
+                },
+                mentionedJid: [],
+            }
+        }, { quoted: ms });
+
     } catch (error) {
-        console.error('Error while creating your URL:', error);
-        repondre('Oops, an error occurred.');
+        console.error("Upload/Convert error:", error);
+        await zk.sendMessage(dest, {
+            text: 'Oops, an error occurred while processing.',
+            contextInfo: {
+                forwardingScore: 9999,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: "120363288304618280@newsletter",
+                    serverMessageId: "",
+                },
+                externalAdReply: {
+                    title: "Nexus URL Generator",
+                    body: "nexus Bot by PK-DRILLER",
+                    thumbnailUrl: conf.LOGO,
+                    mediaType: 1,
+                    mediaUrl: conf.URL,
+                    sourceUrl: conf.GURL,
+                    renderLargerThumbnail: true,
+                    showAdAttribution: true,
+                },
+                mentionedJid: [],
+            }
+        }, { quoted: ms });
     }
 });
-            
+                        
