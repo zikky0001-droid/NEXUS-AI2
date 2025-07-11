@@ -2,61 +2,52 @@ const util = require('util');
 const fs = require('fs-extra');
 const axios = require('axios');
 const { zokou } = require(__dirname + "/../framework/zokou");
-const os = require('os');
+const os = require("os");
 const moment = require("moment-timezone");
 const conf = require(__dirname + "/../set");
-moment.tz.setDefault(conf.TZ);
-const { getTimeAndDate } = require(__dirname + "/../lib/myfunc");
 
-const AUDIO_URL = "https://files.catbox.moe/6zqdrk.mp3";
+const AUDIO_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3";
+const THUMBNAIL_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg";
 
-const fakeContact = {
-  key: {
-    participant: "0@s.whatsapp.net",
-    remoteJid: "status@broadcast",
-    fromMe: false
-  },
-  message: {
-    contactMessage: {
-      displayName: "Zokou Verified",
-      vcard: "BEGIN:VCARD\nVERSION:3.0\nFN:Zokou Verified\nORG:Zokou Inc.\nTEL;type=CELL;type=VOICE;waid=254794146821:+254 941 46821\nEND:VCARD",
-      jpegThumbnail: fs.readFileSync(__dirname + "/../media/verified.jpg"),
-      isFromMe: false
-    }
-  }
-};
+moment.tz.setDefault(`${conf.TZ}`);
 
-zokou({
-  nomCom: "speed",
-  categorie: "General"
-}, async (dest, zk, commandeOptions) => {
-  const { date, heure } = getTimeAndDate();
-  const start = Date.now();
-  await zk.sendMessage(dest, { text: "🏃 Measuring speed..." });
-  const speed = Date.now() - start;
+const getTimeAndDate = () => ({
+    time: moment().format('HH:mm:ss'),
+    date: moment().format('DD/MM/YYYY')
+});
 
-  await zk.sendMessage(dest, {
-    audio: { url: AUDIO_URL },
-    mimetype: 'audio/mp4',
-    ptt: true,
-    caption: `⚡ Speed: ${speed}ms\n📅 ${date} | 🕒 ${heure}`,
-    contextInfo: {
-      forwardingScore: 999,
-      isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363288304618280@newsletter',
-        serverMessageId: '101',
-        newsletterName: 'NEXUS-AI'
-      },
-      externalAdReply: {
-        title: "⚡ Speed Test",
-        body: `📍 Latency: ${speed}ms`,
-        thumbnailUrl: conf.IMAGE_MENU,
-        sourceUrl: conf.CHANNEL,
-        mediaType: 1,
-        renderLargerThumbnail: true,
-        showAdAttribution: true
-      }
-    }
-  }, { quoted: fakeContact });
+zokou({ nomCom: "speed", categorie: "General" }, async (dest, zk, commandeOptions) => {
+    let { ms } = commandeOptions;
+    const { time, date } = getTimeAndDate();
+    const start = performance.now();
+
+    try {
+        const end = performance.now();
+        const speed = (end - start).toFixed(2);
+
+        await zk.sendMessage(dest, {
+            audio: { url: AUDIO_URL },
+            mimetype: 'audio/mp4',
+            ptt: true,
+            text: `⚡ Speed Test\n📶 Response: ${speed} ms\n🕒 ${time} | 📅 ${date}`,
+            contextInfo: {
+                forwardingScore: 999,
+                isForwarded: true,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363288304618280@newsletter',
+                    newsletterName: 'NEXUS-AI',
+                    serverMessageId: 143
+                },
+                externalAdReply: {
+                    title: "Speed Test 💨",
+                    body: "Bot is running fast and smooth!",
+                    thumbnailUrl: conf.URL,
+                    sourceUrl: conf.GURL,
+                    mediaType: 1
+                }
+            }
+        }, { quoted: ms });
+    } catch (e) {
+        console.log("❌ Speed Command Error: " + e);
+    }
 });
