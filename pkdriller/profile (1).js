@@ -3,7 +3,7 @@ const conf = require("../set")
 const {jidDecode}=require("@whiskeysockets/baileys")
 
 zokou({
-  nomCom: "status",
+  nomCom: "getpp",
   categorie: "Fun",
 },
   async (dest, zk, commandeOptions) => {
@@ -63,7 +63,7 @@ zokou({
             title: "PkDriller",
             sourceUrl: "https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x",
             mediaType: 1,
-            renderLargerThumbnail: true
+            renderLargerThumbnail: false
           }
         }
       }
