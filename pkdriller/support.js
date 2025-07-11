@@ -45,11 +45,11 @@ zokou(
     const caption = `
 ╭──〔 *🤖 Nexus AI Support Center* 〕──◆
 │
-├ 🌐 *Website:*  https://nexusai.tech
+├ 🌐 *Website:*   https://pkdriller-web.vercel.app/
 ├ 💻 *GitHub:*    https://github.com/nexustech1911/NEXUS-XMD
-├ 📢 *Channel:*   
+├ 📢 *Channel:*   https://whatsapp.com/channel/0029Vad7YNyJuyA77CtIPX0x
 ├ 💬 *Contact:*   wa.me/254794146821
-├ 💰 *Support:*   
+├ 💰 *Support:*   https://pkdriller-business.vercel.app/
 ╰─🕘 *Updated:* ${time} - ${full}`;
 
     await zk.sendMessage(
