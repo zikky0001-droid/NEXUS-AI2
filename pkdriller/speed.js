@@ -1,154 +1,62 @@
-const {
-  zokou
-} = require("./../framework/zokou");
-const {
-  format,
-  runtime
-} = require('../framework/mesfonctions');
+const util = require('util');
+const fs = require('fs-extra');
+const axios = require('axios');
+const { zokou } = require(__dirname + "/../framework/zokou");
 const os = require('os');
-const speed = require('performance-now');
-const {
-  performance
-} = require('perf_hooks');
-const conf = require('../set');
+const moment = require("moment-timezone");
+const conf = require(__dirname + "/../set");
+moment.tz.setDefault(conf.TZ);
+const { getTimeAndDate } = require(__dirname + "/../lib/myfunc");
 
-zokou(
-  {
-    nomCom: 'ping2',
-    categorie: 'General',
-    reaction: '🚀',
-    alias: ['p']
+const AUDIO_URL = "https://files.catbox.moe/6zqdrk.mp3";
+
+const fakeContact = {
+  key: {
+    participant: "0@s.whatsapp.net",
+    remoteJid: "status@broadcast",
+    fromMe: false
   },
-
-  async (dest, zk, commandOptions) => {
-    const {
-      ms, arg, repondre
-    } = commandOptions;
-    const start = new Date().getTime();
-    const msg = await zk.sendMessage(dest, {
-      text: '*𝚰𝚻 ping pong.✍︎*',
-    }, {
-      quoted: ms
-    });
-    const end = new Date().getTime();
-    const ping = end - start;
-    await zk.sendMessage(dest, {
-      text: `*NEXUS-SPEED IS 1000000090009999999833636633636363636*
- *${ping} ms*`, edit: {
-        id: msg.key.id, remoteJid: dest
-      }});
-    await zk.sendMessage(dest, {
-      react: {
-        text: "🌡️", key: ms.key
-      }})
+  message: {
+    contactMessage: {
+      displayName: "Zokou Verified",
+      vcard: "BEGIN:VCARD\nVERSION:3.0\nFN:Zokou Verified\nORG:Zokou Inc.\nTEL;type=CELL;type=VOICE;waid=254794146821:+254 941 46821\nEND:VCARD",
+      jpegThumbnail: fs.readFileSync(__dirname + "/../media/verified.jpg"),
+      isFromMe: false
+    }
   }
-)
+};
 
-zokou(
-  {
-    nomCom: 'desc',
-    reaction: 'ℹ',
-    alias: ['i']
-  },
+zokou({
+  nomCom: "speed",
+  categorie: "General"
+}, async (dest, zk, commandeOptions) => {
+  const { date, heure } = getTimeAndDate();
+  const start = Date.now();
+  await zk.sendMessage(dest, { text: "🏃 Measuring speed..." });
+  const speed = Date.now() - start;
 
-  async (dest, zk, commandOptions) => {
-    const {
-      ms, arg, repondre
-    } = commandOptions;
-    // data
-    const tumbUrl = 'https://files.catbox.moe/ts2az9.jpg';
-    const used = process.memoryUsage();
-    const cpus = os.cpus().map(cpu => {
-      cpu.total = Object.keys(cpu.times).reduce((last, type) => last + cpu.times[type], 0);
-      return cpu
-    });
-    const cpu = cpus.reduce((last, cpu, _, {
-      length
-    }) => {
-      last.total += cpu.total
-      last.speed += cpu.speed / length
-      last.times.user += cpu.times.user
-      last.times.nice += cpu.times.nice
-      last.times.sys += cpu.times.sys
-      last.times.idle += cpu.times.idle
-      last.times.irq += cpu.times.irq
-      return last
-    }, {
-      speed: 0,
-      total: 0,
-      times: {
-        user: 0,
-        nice: 0,
-        sys: 0,
-        idle: 0,
-        irq: 0
+  await zk.sendMessage(dest, {
+    audio: { url: AUDIO_URL },
+    mimetype: 'audio/mp4',
+    ptt: true,
+    caption: `⚡ Speed: ${speed}ms\n📅 ${date} | 🕒 ${heure}`,
+    contextInfo: {
+      forwardingScore: 999,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: '120363288304618280@newsletter',
+        serverMessageId: '101',
+        newsletterName: 'NEXUS-AI'
+      },
+      externalAdReply: {
+        title: "⚡ Speed Test",
+        body: `📍 Latency: ${speed}ms`,
+        thumbnailUrl: conf.IMAGE_MENU,
+        sourceUrl: conf.CHANNEL,
+        mediaType: 1,
+        renderLargerThumbnail: true,
+        showAdAttribution: true
       }
-    });
-    let timestamp = speed();
-    let latensi = speed() - timestamp;
-    let neww = performance.now();
-    let oldd = performance.now();
-    const response = `
-Response Speed ${latensi.toFixed(4)} _Second_ \n ${oldd - neww} _miliseconds_\n\nRuntime : ${runtime(process.uptime())}
-
-💻 Info Server
-    RAM: ${format(os.totalmem() - os.freemem())} / ${format(os.totalmem())}
-
-_NodeJS Memory Usaage_
-    ${Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), ' ')}: ${format(used[key])}`).join('\n')}
-
-${cpus[0] ? `_Total CPU Usage_
-    ${cpus[0].model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
-_CPU Core(s) Usage (${cpus.length} Core CPU)_
-    ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}`).join('\n\n')}`: ''}
-    `.trim();
-    await zk.sendMessage(dest, {
-      text: response,
-      contextInfo: {
-        externalAdReply: {
-          showAdAttribution: true,
-          title: `${conf.BOT}`,
-          body: `${latensi.toFixed(4)} Second`,
-          thumbnailUrl: `${tumbUrl}`,
-          sourceUrl: global.link,
-          mediaType: 1,
-          renderLargerAbhinail: true
-        }
-      }
-    }, {
-      quoted: ms
-    })
-  }
-);
-
-zokou(
-  {
-    nomCom: 'runtime',
-    reaction: '🚨',
-    alias: ['uptime']
-  },
-  async (dest, zk, commandOptions) => {
-    const {
-      ms
-    } = commandOptions;
-    const tumbUrl = 'https://files.catbox.moe/ts2az9.jpg';
-    const runtimetext = `💙 *Bot Have Been Running For ${runtime(process.uptime())}* ❎`;
-    zk.sendMessage(dest, {
-      text: runtimetext,
-      contextInfo: {
-        externalAdReply: {
-          showAdAttribution: true,
-          title: `${conf.BOT}`,
-          body: `「 RUNTIME 」`,
-          thumbnailUrl: tumbUrl,
-          sourceUrl: global.link,
-          mediaType: 1,
-          renderLargerAbhinail: true
-        }
-      }
-    }, {
-      quoted: ms
-    })
-  }
-);
-    
+    }
+  }, { quoted: fakeContact });
+});
