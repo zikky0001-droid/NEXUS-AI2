@@ -36,7 +36,7 @@ zokou({ nomCom: "alive", categorie: "General" }, async (dest, zk, commandeOption
                 },
                 externalAdReply: {
                     title: "Bot is online ✅",
-                    body: "NEXUS-XMD WhatsApp Bot",
+                    body: "NEXUS-AI WhatsApp Bot",
                     thumbnailUrl: conf.URL,
                     sourceUrl: conf.GURL,
                     mediaType: 1
