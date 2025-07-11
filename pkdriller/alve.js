@@ -25,7 +25,7 @@ zokou({ nomCom: "alive", categorie: "General" }, async (dest, zk, commandeOption
             audio: { url: AUDIO_URL },
             mimetype: 'audio/mp4',
             ptt: true,
-            text: `✅ *NEXUS-XMD is Alive!*\n🕐 ${time}\n📅 ${date}`,
+            text: `✅ *NEXUS-AI is Alive!*\n🕐 ${time}\n📅 ${date}`,
             contextInfo: {
                 forwardingScore: 999,
                 isForwarded: true,
