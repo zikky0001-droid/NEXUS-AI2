@@ -40,7 +40,7 @@ zokou({ nomCom: "botinfo", categorie: "General" }, async (dest, zk, commandeOpti
           serverMessageId: 143
         },
         externalAdReply: {
-          title: "NEXUS-XMD STATUS",
+          title: "NEXUS-AI STATUS",
           body: "Bot is running smoothly 🔥",
           thumbnailUrl: conf.URL,
           sourceUrl: conf.GURL,
