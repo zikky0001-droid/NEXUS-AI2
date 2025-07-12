@@ -1,62 +1,66 @@
 const axios = require("axios");
 const fs = require("fs-extra");
-const moment = require("moment-timezone");
 const { zokou } = require(__dirname + "/../framework/zokou");
+const moment = require("moment-timezone");
 const conf = require(__dirname + "/../set");
 
 moment.tz.setDefault(conf.TZ);
 
-zokou({
-  nomCom: "enhancepic",
-  categorie: "tools"
-}, async (dest, zk, { ms, arg }) => {
-  const imageUrl = arg[0];
+// Map of supported celebrity voices (mock voice IDs or tags)
+const voiceMap = {
+  obama: "barack-obama",
+  trump: "donald-trump",
+  morgan: "morgan-freeman",
+  eminem: "eminem",
+  elon: "elon-musk",
+  kanye: "kanye-west"
+};
 
-  if (!imageUrl || !/^https?:\/\//i.test(imageUrl)) {
+zokou({
+  nomCom: "aivoice",
+  categorie: "ai-tools"
+}, async (dest, zk, { ms, arg }) => {
+  const voiceKey = arg[0]?.toLowerCase();
+  const text = arg.slice(1).join(" ");
+
+  if (!voiceKey || !text) {
     return zk.sendMessage(dest, {
-      text: `🖼️ *Usage:* .enhancepic <image_url>\n\nExample:\n.enhancepic https://example.com/image.jpg`,
+      text: `🎙️ *Usage:* .aivoice <voice> <text>\n\n*Example:*\n.aivoice obama Hello my people!`,
+      contextInfo: getContext()
+    }, { quoted: ms });
+  }
+
+  const voiceId = voiceMap[voiceKey];
+  if (!voiceId) {
+    return zk.sendMessage(dest, {
+      text: `❌ *Unsupported voice.*\n\n*Available voices:* ${Object.keys(voiceMap).join(", ")}`,
       contextInfo: getContext()
     }, { quoted: ms });
   }
 
   try {
-    const imgPath = "./temp_input.jpg";
-    const outputPath = "./temp_output.png";
+    // Example: Use a public Hugging Face-hosted voice-clone endpoint (mocked here)
+    const apiUrl = `https://api.fakeyvoices.tech/clone`; // Replace with real clone API
+    const response = await axios.post(apiUrl, {
+      voice: voiceId,
+      text
+    }, { responseType: "arraybuffer" });
 
-    const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
-    await fs.writeFile(imgPath, response.data);
-
-    const enhanceRes = await axios({
-      method: "post",
-      url: "https://api-inference.huggingface.co/models/CompVis/real-esrgan",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/octet-stream"
-      },
-      data: fs.readFileSync(imgPath),
-      responseType: "arraybuffer"
-    }).catch(() => null);
-
-    if (!enhanceRes || enhanceRes.status !== 200) {
-      return zk.sendMessage(dest, {
-        text: "❌ Failed to enhance image. Try a different URL or image.",
-        contextInfo: getContext()
-      }, { quoted: ms });
-    }
-
-    await fs.writeFile(outputPath, enhanceRes.data);
+    const outputPath = "./voice_clone.mp3";
+    await fs.writeFile(outputPath, response.data);
 
     await zk.sendMessage(dest, {
-      image: fs.readFileSync(outputPath),
-      caption: "✅ Image successfully enhanced!",
+      audio: fs.readFileSync(outputPath),
+      mimetype: "audio/mp4",
+      ptt: false,
       contextInfo: getContext()
     }, { quoted: ms });
 
-    await fs.unlink(imgPath).catch(() => {});
     await fs.unlink(outputPath).catch(() => {});
   } catch (err) {
-    await zk.sendMessage(dest, {
-      text: "⚠️ Could not process the image URL. Ensure it's valid and publicly accessible.",
+    console.error(err);
+    return zk.sendMessage(dest, {
+      text: `❌ Failed to generate voice. Try again later or use shorter text.`,
       contextInfo: getContext()
     }, { quoted: ms });
   }
@@ -67,16 +71,16 @@ function getContext() {
     forwardingScore: 999,
     isForwarded: true,
     externalAdReply: {
-      title: "Image Enhancer",
+      title: "AI Voice Cloner",
       mediaUrl: conf.URL,
       sourceUrl: conf.GURL,
       thumbnailUrl: conf.LOGO
     },
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363288304618280@newsletter",
-      newsletterName: "Nexus AI",
+      newsletterJid: "120363025983927370@newsletter",
+      newsletterName: "Nexus XMD",
       serverMessageId: "15"
     }
   };
-          }
-        
+    }
+      
