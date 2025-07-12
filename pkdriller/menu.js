@@ -77,7 +77,7 @@ zokou({
           renderLargerThumbnail: true,
           sourceUrl: "https://nexusai.tech",
           media: {
-            url: "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/video/nexusmenu.mp4"
+            url: "https://files.catbox.moe/4mtq1s.mp4"
           }
         }
       }
