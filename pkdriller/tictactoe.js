@@ -1,181 +1,92 @@
-const util = require('util');
-const fs = require('fs-extra');
-const os = require('os');
-const axios = require('axios');
-const moment = require('moment-timezone');
-const conf = require(__dirname + '/../set');
-moment.tz.setDefault(conf.TZ);
-const { zokou } = require(__dirname + '/../framework/zokou');
-
-const AUDIO_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3";
-
-let games = {};
-
-function formatBoard(board) {
-  return `
-${board[0]} | ${board[1]} | ${board[2]}
----------
-${board[3]} | ${board[4]} | ${board[5]}
----------
-${board[6]} | ${board[7]} | ${board[8]}
-`.replace(/null/g, ' ');
-}
-
-function checkWinner(board, player) {
-  const wins = [
-    [0,1,2], [3,4,5], [6,7,8],
-    [0,3,6], [1,4,7], [2,5,8],
-    [0,4,8], [2,4,6]
-  ];
-  return wins.some(combo => combo.every(i => board[i] === player));
-}
-
-function isDraw(board) {
-  return board.every(cell => cell !== null);
-}
-
+const {
+  zokou
+} = require('../framework/zokou');
 zokou({
-  nomCom: 'ticatoe',
-  categorie: 'game'
-}, async (dest, zk, { ms, arg, quoted }) => {
-  const sender = ms.sender;
-  const mentioned = ms.mentionByTag[0];
-
-  if (!mentioned) return zk.sendMessage(dest, {
-    text: '*🎮 TICTACTOE GAME*\n\n_Tumia_ *.ticatoe @mtu* _kuanzisha game._',
-    contextInfo: {
-      forwardingScore: 999,
-      isForwarded: true,
-      externalAdReply: {
-        title: 'NEXUS AI - TICTACTOE',
-        mediaType: 2,
-        mediaUrl: conf.URL,
-        sourceUrl: conf.GURL,
-        thumbnailUrl: conf.LOGO
-      },
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363025983927370@newsletter',
-        newsletterName: "Nexus XMD",
-        serverMessageId: "10"
-      }
-    }
-  }, { quoted: ms });
-
-  const gameId = `${sender}:${mentioned}`;
-  games[gameId] = {
-    board: Array(9).fill(null),
-    players: [sender, mentioned],
-    turn: 0
-  };
-
-  await zk.sendMessage(dest, {
-    text: `🎮 *TICTACTOE Game Started!*\n\n${ms.pushName} VS @${mentioned.split('@')[0]}\n\nMchezaji wa kwanza: @${games[gameId].players[0].split('@')[0]}\n\n*Tumia:* *.move [1-9]*\n\n${formatBoard(games[gameId].board)}`,
-    mentions: [sender, mentioned],
-    contextInfo: {
-      forwardingScore: 999,
-      isForwarded: true,
-      externalAdReply: {
-        title: 'NEXUS AI GAME',
-        mediaType: 2,
-        mediaUrl: conf.URL,
-        sourceUrl: conf.GURL,
-        thumbnailUrl: conf.LOGO
-      },
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363025983927370@newsletter',
-        newsletterName: "Nexus XMD",
-        serverMessageId: "12"
-      }
-    }
-  }, { quoted: ms });
-
-  await zk.sendMessage(dest, {
-    audio: { url: AUDIO_URL },
-    mimetype: 'audio/mp4',
-    ptt: true
-  }, { quoted: ms });
-});
-
-// Move handler
-zokou({
-  nomCom: 'move',
-  categorie: 'game'
-}, async (dest, zk, { ms, arg }) => {
-  const sender = ms.sender;
-  const move = parseInt(arg[0]) - 1;
-
-  const game = Object.values(games).find(g => g.players.includes(sender));
-  if (!game) return zk.sendMessage(dest, {
-    text: '*🚫 Hakuna game inayoendelea kwako. Anzisha kwa:* `.ticatoe @mtu`',
-    contextInfo: {
-      forwardingScore: 777,
-      isForwarded: true,
-      externalAdReply: {
-        title: 'No Game Found',
-        mediaUrl: conf.URL,
-        sourceUrl: conf.GURL,
-        thumbnailUrl: conf.LOGO
-      },
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363025983927370@newsletter',
-        newsletterName: "Nexus XMD",
-        serverMessageId: "11"
-      }
-    }
-  }, { quoted: ms });
-
-  if (game.players[game.turn] !== sender)
-    return zk.sendMessage(dest, { text: `⏳ *Subiri zamu yako!*` }, { quoted: ms });
-
-  if (move < 0 || move > 8 || game.board[move])
-    return zk.sendMessage(dest, { text: `❌ *Nafasi hiyo haifai. Tumia namba 1-9 na usichukue nafasi iliyochukuliwa.*` }, { quoted: ms });
-
-  game.board[move] = game.turn === 0 ? '❌' : '⭕';
-
-  const opponent = game.players[1 - game.turn];
-
-  if (checkWinner(game.board, game.board[move])) {
-    delete games[`${game.players[0]}:${game.players[1]}`];
-    return zk.sendMessage(dest, {
-      text: `🎉 *Mshindi:* @${sender.split('@')[0]}!\n\n${formatBoard(game.board)}`,
-      mentions: [sender],
-      contextInfo: {
-        forwardingScore: 999,
-        isForwarded: true,
-        externalAdReply: {
-          title: 'Winner!',
-          mediaUrl: conf.URL,
-          sourceUrl: conf.GURL,
-          thumbnailUrl: conf.LOGO
-        },
-        forwardedNewsletterMessageInfo: {
-          newsletterJid: '120363025983927370@newsletter',
-          newsletterName: "Nexus XMD",
-          serverMessageId: "14"
+  'nomCom': "tictactoe",
+  'categorie': "Games",
+  'reaction': '🎮'
+}, async (_0x322626, _0x34cd39, _0x5f5331) => {
+  const {
+    repondre: _0x1a5b7e,
+    ms: _0x545f7a,
+    auteurMessage: _0x52bc7e,
+    auteurMsgRepondu: _0x30c2ec,
+    msgRepondu: _0x42d3ab,
+    arg: _0x13f50e,
+    idBot: _0xc37cda
+  } = _0x5f5331;
+  if (_0x42d3ab) {
+    _0x34cd39.sendMessage(_0x322626, {
+      'text': '@' + _0x52bc7e.split('@')[0x0] + " invites @" + _0x30c2ec.split('@')[0x0] + " to play Tic-Tac-Toe. To accept the challenge, type 'yes'.",
+      'mentions': [_0x52bc7e, _0x30c2ec]
+    });
+    try {
+      const _0x4c52c4 = await _0x34cd39.awaitForMessage({
+        'sender': _0x30c2ec,
+        'chatJid': _0x322626,
+        'timeout': 0x7530
+      });
+      if (_0x4c52c4.message.conversation.toLowerCase() === "yes" || _0x4c52c4.message.extendedTextMessage.text.toLowerCase() === "yes") {
+        let _0x53ba84 = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']];
+        let _0x4e390e = _0x52bc7e;
+        let _0x3649f4 = false;
+        while (!_0x3649f4) {
+          let _0x485404 = "Current board:\n" + _0x53ba84.map(_0x10f832 => _0x10f832.join(" | ")).join("\n---|---|---\n") + "\n\n@" + _0x4e390e.split('@')[0x0] + ", make your move (choose a number from the board).";
+          _0x34cd39.sendMessage(_0x322626, {
+            'text': _0x485404,
+            'mentions': [_0x4e390e]
+          });
+          const _0x454e45 = await _0x34cd39.awaitForMessage({
+            'sender': _0x4e390e,
+            'chatJid': _0x322626,
+            'timeout': 0x7530
+          });
+          const _0x489f03 = _0x454e45.message.conversation;
+          const _0x36a5c9 = _0x53ba84.flat().indexOf(_0x489f03);
+          if (_0x36a5c9 !== -0x1) {
+            const _0x257ae3 = Math.floor(_0x36a5c9 / 0x3);
+            const _0x412fd6 = _0x36a5c9 % 0x3;
+            _0x53ba84[_0x257ae3][_0x412fd6] = _0x4e390e === _0x52bc7e ? 'X' : 'O';
+            if (checkWin(_0x53ba84, _0x4e390e === _0x52bc7e ? 'X' : 'O')) {
+              _0x34cd39.sendMessage(_0x322626, {
+                'text': "Player @" + _0x4e390e.split('@')[0x0] + " wins!",
+                'mentions': [_0x52bc7e, _0x30c2ec]
+              });
+              _0x3649f4 = true;
+            } else if (_0x53ba84.flat().every(_0x34f282 => _0x34f282 === 'X' || _0x34f282 === 'O')) {
+              _0x34cd39.sendMessage(_0x322626, {
+                'text': "The game is a draw!",
+                'mentions': [_0x52bc7e, _0x30c2ec]
+              });
+              _0x3649f4 = true;
+            } else {
+              _0x4e390e = _0x4e390e === _0x52bc7e ? _0x30c2ec : _0x52bc7e;
+            }
+          } else {
+            _0x34cd39.sendMessage(_0x322626, {
+              'text': "Invalid move. Please choose a number from the board.",
+              'mentions': [_0x4e390e]
+            });
+          }
         }
+      } else {
+        _0x1a5b7e("Invitation refused");
       }
-    }, { quoted: ms });
-  }
-
-  if (isDraw(game.board)) {
-    delete games[`${game.players[0]}:${game.players[1]}`];
-    return zk.sendMessage(dest, {
-      text: `🤝 *Game Imeisha Sare!*\n\n${formatBoard(game.board)}`,
-      contextInfo: {
-        forwardingScore: 888,
-        isForwarded: true
+    } catch (_0x36914a) {
+      if (_0x36914a.message === "Timeout") {
+        _0x34cd39.sendMessage(_0x322626, {
+          'text': '@' + _0x30c2ec.split('@')[0x0] + " took too long to respond. Game canceled.",
+          'mentions': [_0x52bc7e, _0x30c2ec]
+        });
+      } else {
+        console.error(_0x36914a);
       }
-    }, { quoted: ms });
-  }
-
-  game.turn = 1 - game.turn;
-
-  await zk.sendMessage(dest, {
-    text: `✅ *Move imewekwa!* Zamu ya @${opponent.split('@')[0]}\n\n${formatBoard(game.board)}`,
-    mentions: [opponent],
-    contextInfo: {
-      forwardingScore: 999,
-      isForwarded: true
     }
-  }, { quoted: ms });
+  } else {
+    _0x1a5b7e("Tic-Tac-Toe is a game for two players. Mention a friend to invite them.");
+  }
 });
+function checkWin(_0x57e57a, _0x5a5651) {
+  const _0x305400 = [[0x0, 0x1, 0x2], [0x3, 0x4, 0x5], [0x6, 0x7, 0x8], [0x0, 0x3, 0x6], [0x1, 0x4, 0x7], [0x2, 0x5, 0x8], [0x0, 0x4, 0x8], [0x2, 0x4, 0x6]];
+  return _0x305400.some(_0x41f141 => _0x41f141.every(_0x258db2 => _0x57e57a[Math.floor(_0x258db2 / 0x3)][_0x258db2 % 0x3] === _0x5a5651));
+            }
