@@ -1,67 +1,65 @@
-const util = require('util');
-const fs = require('fs-extra');
-const axios = require('axios');
-const os = require('os');
-const moment = require('moment-timezone');
-const { zokou } = require(__dirname + '/../framework/zokou');
-const conf = require(__dirname + '/../set');
-const { downloadMediaMessage } = require('@whiskeysockets/baileys');
+const axios = require("axios");
+const fs = require("fs-extra");
+const moment = require("moment-timezone");
+const { zokou } = require(__dirname + "/../framework/zokou");
+const conf = require(__dirname + "/../set");
 
 moment.tz.setDefault(conf.TZ);
-const AUDIO_URL = 'https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3';
 
 zokou({
-  nomCom: 'enhancepic',
-  categorie: 'tools'
-}, async (dest, zk, { ms }) => {
-  if (!ms.quoted || !ms.quoted.imageMessage) {
+  nomCom: "enhancepic",
+  categorie: "tools"
+}, async (dest, zk, { ms, arg }) => {
+  const imageUrl = arg[0];
+
+  if (!imageUrl || !/^https?:\/\//i.test(imageUrl)) {
     return zk.sendMessage(dest, {
-      text: `📸 *Tuma picha na tumia:* .enhancepic\n\nNitakurudishia toleo lililo boreshwa.`,
+      text: `🖼️ *Usage:* .enhancepic <image_url>\n\nExample:\n.enhancepic https://example.com/image.jpg`,
       contextInfo: getContext()
     }, { quoted: ms });
   }
 
-  const buff = await downloadMediaMessage(ms.quoted, 'buffer', {}, { reuploadRequest: zk });
-  const imgPath = './tmp_input.jpg';
-  const outPath = './tmp_output.png';
-  await fs.writeFile(imgPath, buff);
+  try {
+    const imgPath = "./temp_input.jpg";
+    const outputPath = "./temp_output.png";
 
-  // Upload image to Hugging Face inference API
-  const response = await axios({
-    method: 'post',
-    url: 'https://api-inference.huggingface.co/models/CompVis/real-esrgan',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/octet-stream'
-    },
-    data: fs.readFileSync(imgPath),
-    responseType: 'arraybuffer'
-  }).catch(e => null);
+    const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
+    await fs.writeFile(imgPath, response.data);
 
-  if (!response || response.status !== 200) {
+    const enhanceRes = await axios({
+      method: "post",
+      url: "https://api-inference.huggingface.co/models/CompVis/real-esrgan",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/octet-stream"
+      },
+      data: fs.readFileSync(imgPath),
+      responseType: "arraybuffer"
+    }).catch(() => null);
+
+    if (!enhanceRes || enhanceRes.status !== 200) {
+      return zk.sendMessage(dest, {
+        text: "❌ Failed to enhance image. Try a different URL or image.",
+        contextInfo: getContext()
+      }, { quoted: ms });
+    }
+
+    await fs.writeFile(outputPath, enhanceRes.data);
+
     await zk.sendMessage(dest, {
-      text: `❌ *Imeshindikana kuboresha picha.*\nJaribu tena baadae.`,
+      image: fs.readFileSync(outputPath),
+      caption: "✅ Image successfully enhanced!",
       contextInfo: getContext()
     }, { quoted: ms });
-    return;
+
+    await fs.unlink(imgPath).catch(() => {});
+    await fs.unlink(outputPath).catch(() => {});
+  } catch (err) {
+    await zk.sendMessage(dest, {
+      text: "⚠️ Could not process the image URL. Ensure it's valid and publicly accessible.",
+      contextInfo: getContext()
+    }, { quoted: ms });
   }
-
-  await fs.writeFile(outPath, response.data);
-
-  await zk.sendMessage(dest, {
-    image: fs.readFileSync(outPath),
-    caption: `✅ *Picha imeboreshwa kwa ufanisi!*`,
-    contextInfo: getContext()
-  }, { quoted: ms });
-
-  await zk.sendMessage(dest, {
-    audio: { url: AUDIO_URL },
-    mimetype: 'audio/mp4',
-    ptt: true
-  }, { quoted: ms });
-
-  await fs.unlink(imgPath).catch(() => {});
-  await fs.unlink(outPath).catch(() => {});
 });
 
 function getContext() {
@@ -69,16 +67,16 @@ function getContext() {
     forwardingScore: 999,
     isForwarded: true,
     externalAdReply: {
-      title: 'Image Enhancer',
+      title: "Image Enhancer",
       mediaUrl: conf.URL,
       sourceUrl: conf.GURL,
       thumbnailUrl: conf.LOGO
     },
     forwardedNewsletterMessageInfo: {
-      newsletterJid: '120363025983927370@newsletter',
-      newsletterName: "Nexus XMD",
+      newsletterJid: "120363288304618280@newsletter",
+      newsletterName: "Nexus AI",
       serverMessageId: "15"
     }
   };
-  }
-  
+          }
+        
