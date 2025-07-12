@@ -1,213 +1,181 @@
 const util = require('util');
 const fs = require('fs-extra');
+const os = require('os');
 const axios = require('axios');
-const { zokou } = require(__dirname + '/../framework/zokou');
-const moment = require("moment-timezone");
-const os = require("os");
+const moment = require('moment-timezone');
 const conf = require(__dirname + '/../set');
 moment.tz.setDefault(conf.TZ);
+const { zokou } = require(__dirname + '/../framework/zokou');
 
 const AUDIO_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3";
-const THUMBNAIL_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg";
 
-const games = {};
+let games = {};
 
-const getTimeAndDate = () => ({
-  time: moment().format("HH:mm:ss"),
-  date: moment().format("DD/MM/YYYY")
-});
-
-class TicTacToeGame {
-  constructor(pX, pO = null) {
-    this.board = Array.from({ length: 9 }, (_, i) => (i + 1).toString());
-    this.playerX = pX;
-    this.playerO = pO;
-    this.turns = 0;
-    this.winner = null;
-    this.currentTurn = pX;
-  }
-
-  render() {
-    return this.board.map((v) => ({
-      X: "❎",
-      O: "⭕",
-      1: "1️⃣", 2: "2️⃣", 3: "3️⃣", 4: "4️⃣", 5: "5️⃣",
-      6: "6️⃣", 7: "7️⃣", 8: "8️⃣", 9: "9️⃣"
-    }[v]));
-  }
-
-  turn(isO, index) {
-    if (this.board[index] === "X" || this.board[index] === "O") return false;
-    this.board[index] = isO ? "O" : "X";
-    this.turns++;
-    this.currentTurn = isO ? this.playerX : this.playerO;
-    this.checkWin();
-    return true;
-  }
-
-  checkWin() {
-    const winSets = [
-      [0, 1, 2], [3, 4, 5], [6, 7, 8],
-      [0, 3, 6], [1, 4, 7], [2, 5, 8],
-      [0, 4, 8], [2, 4, 6]
-    ];
-
-    for (const [a, b, c] of winSets) {
-      if (this.board[a] === this.board[b] &&
-          this.board[b] === this.board[c]) {
-        this.winner = this.board[a] === "X" ? this.playerX : this.playerO;
-        break;
-      }
-    }
-  }
+function formatBoard(board) {
+  return `
+${board[0]} | ${board[1]} | ${board[2]}
+---------
+${board[3]} | ${board[4]} | ${board[5]}
+---------
+${board[6]} | ${board[7]} | ${board[8]}
+`.replace(/null/g, ' ');
 }
 
-// .tictactoe command
-zokou({ nomCom: "tictactoe", aliases: ["ttt"], categorie: "Games" }, async (dest, zk, commandeOptions) => {
-  const { ms, sender } = commandeOptions;
+function checkWinner(board, player) {
+  const wins = [
+    [0,1,2], [3,4,5], [6,7,8],
+    [0,3,6], [1,4,7], [2,5,8],
+    [0,4,8], [2,4,6]
+  ];
+  return wins.some(combo => combo.every(i => board[i] === player));
+}
 
-  const existing = Object.values(games).find(
-    (room) => [room.game.playerX, room.game.playerO].includes(sender)
-  );
+function isDraw(board) {
+  return board.every(cell => cell !== null);
+}
 
-  if (existing) {
-    return zk.sendMessage(dest, {
-      text: "❌ You're already in a game. Type *surrender* to quit.",
-      contextInfo: {
-        forwardingScore: 999,
-        isForwarded: true,
-        forwardedNewsletterMessageInfo: {
-          newsletterJid: '120363288304618280@newsletter',
-          newsletterName: 'NEXUS-AI',
-          serverMessageId: 143
-        },
-        externalAdReply: {
-          title: "TicTacToe Conflict",
-          body: "Surrender to start a new game.",
-          thumbnailUrl: THUMBNAIL_URL,
-          sourceUrl: conf.GURL,
-          mediaType: 1,
-          renderLargerThumbnail: true
-        }
-      }
-    }, { quoted: ms });
-  }
+zokou({
+  nomCom: 'ticatoe',
+  categorie: 'game'
+}, async (dest, zk, { ms, arg, quoted }) => {
+  const sender = ms.sender;
+  const mentioned = ms.mentionByTag[0];
 
-  const waiting = Object.values(games).find((g) => g.state === "WAITING");
+  if (!mentioned) return zk.sendMessage(dest, {
+    text: '*🎮 TICTACTOE GAME*\n\n_Tumia_ *.ticatoe @mtu* _kuanzisha game._',
+    contextInfo: {
+      forwardingScore: 999,
+      isForwarded: true,
+      externalAdReply: {
+        title: 'NEXUS AI - TICTACTOE',
+        mediaType: 2,
+        mediaUrl: conf.URL,
+        sourceUrl: conf.GURL,
+        thumbnailUrl: conf.LOGO
+      },
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: '120363025983927370@newsletter',
+        newsletterName: "Nexus XMD",
+        serverMessageId: "10"
+      }
+    }
+  }, { quoted: ms });
 
-  if (waiting) {
-    waiting.game.playerO = sender;
-    waiting.state = "PLAYING";
-    const game = waiting.game;
-    const board = game.render();
+  const gameId = `${sender}:${mentioned}`;
+  games[gameId] = {
+    board: Array(9).fill(null),
+    players: [sender, mentioned],
+    turn: 0
+  };
 
-    const message = `
-🎮 *TicTacToe Game Started!*
-❎ @${game.playerX.split("@")[0]} vs ⭕ @${game.playerO.split("@")[0]}
-🎯 Turn: @${game.currentTurn.split("@")[0]}
+  await zk.sendMessage(dest, {
+    text: `🎮 *TICTACTOE Game Started!*\n\n${ms.pushName} VS @${mentioned.split('@')[0]}\n\nMchezaji wa kwanza: @${games[gameId].players[0].split('@')[0]}\n\n*Tumia:* *.move [1-9]*\n\n${formatBoard(games[gameId].board)}`,
+    mentions: [sender, mentioned],
+    contextInfo: {
+      forwardingScore: 999,
+      isForwarded: true,
+      externalAdReply: {
+        title: 'NEXUS AI GAME',
+        mediaType: 2,
+        mediaUrl: conf.URL,
+        sourceUrl: conf.GURL,
+        thumbnailUrl: conf.LOGO
+      },
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: '120363025983927370@newsletter',
+        newsletterName: "Nexus XMD",
+        serverMessageId: "12"
+      }
+    }
+  }, { quoted: ms });
 
-${board.slice(0, 3).join("")}
-${board.slice(3, 6).join("")}
-${board.slice(6).join("")}
-
-Type 1-9 to play. Type *surrender* to quit.
-    `.trim();
-
-    await zk.sendMessage(dest, {
-      text: message,
-      mentions: [game.playerX, game.playerO],
-      contextInfo: {
-        forwardingScore: 999,
-        isForwarded: true,
-        forwardedNewsletterMessageInfo: {
-          newsletterJid: '120363288304618280@newsletter',
-          newsletterName: 'NEXUS-AI',
-          serverMessageId: 143
-        },
-        externalAdReply: {
-          title: "TicTacToe Game",
-          body: "Let the game begin!",
-          thumbnailUrl: THUMBNAIL_URL,
-          sourceUrl: conf.GURL,
-          mediaType: 1,
-          renderLargerThumbnail: true
-        }
-      }
-    }, { quoted: ms });
-
-    await zk.sendMessage(dest, {
-      audio: { url: AUDIO_URL },
-      mimetype: "audio/mp4",
-      ptt: true
-    }, { quoted: ms });
-
-  } else {
-    const id = "ttt-" + Date.now();
-    games[id] = {
-      id,
-      game: new TicTacToeGame(sender),
-      state: "WAITING"
-    };
-    await zk.sendMessage(dest, {
-      text: "⏳ Waiting for opponent. Ask someone to type *.tictactoe* to join."
-    }, { quoted: ms });
-  }
+  await zk.sendMessage(dest, {
+    audio: { url: AUDIO_URL },
+    mimetype: 'audio/mp4',
+    ptt: true
+  }, { quoted: ms });
 });
 
-// message handler to play
-zokou({ nomCom: "any", categorie: "Games" }, async (dest, zk, commandeOptions) => {
-  const { ms, sender, body } = commandeOptions;
-  const isMove = /^[1-9]$/.test(body.trim());
-  const isSurrender = /^(surrender|give up)$/i.test(body.trim());
+// Move handler
+zokou({
+  nomCom: 'move',
+  categorie: 'game'
+}, async (dest, zk, { ms, arg }) => {
+  const sender = ms.sender;
+  const move = parseInt(arg[0]) - 1;
 
-  const room = Object.values(games).find(
-    (g) => g.state === "PLAYING" && [g.game.playerX, g.game.playerO].includes(sender)
-  );
+  const game = Object.values(games).find(g => g.players.includes(sender));
+  if (!game) return zk.sendMessage(dest, {
+    text: '*🚫 Hakuna game inayoendelea kwako. Anzisha kwa:* `.ticatoe @mtu`',
+    contextInfo: {
+      forwardingScore: 777,
+      isForwarded: true,
+      externalAdReply: {
+        title: 'No Game Found',
+        mediaUrl: conf.URL,
+        sourceUrl: conf.GURL,
+        thumbnailUrl: conf.LOGO
+      },
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: '120363025983927370@newsletter',
+        newsletterName: "Nexus XMD",
+        serverMessageId: "11"
+      }
+    }
+  }, { quoted: ms });
 
-  if (!room) return;
-  const game = room.game;
+  if (game.players[game.turn] !== sender)
+    return zk.sendMessage(dest, { text: `⏳ *Subiri zamu yako!*` }, { quoted: ms });
 
-  if (isSurrender) {
-    const opponent = sender === game.playerX ? game.playerO : game.playerX;
-    delete games[room.id];
-    return zk.sendMessage(dest, {
-      text: `🏳️ @${sender.split('@')[0]} surrendered! @${opponent.split('@')[0]} wins!`,
-      mentions: [sender, opponent]
-    }, { quoted: ms });
-  }
+  if (move < 0 || move > 8 || game.board[move])
+    return zk.sendMessage(dest, { text: `❌ *Nafasi hiyo haifai. Tumia namba 1-9 na usichukue nafasi iliyochukuliwa.*` }, { quoted: ms });
 
-  if (!isMove) return;
-  if (sender !== game.currentTurn) {
-    return zk.sendMessage(dest, { text: "❌ Not your turn!" }, { quoted: ms });
-  }
+  game.board[move] = game.turn === 0 ? '❌' : '⭕';
 
-  const move = parseInt(body.trim()) - 1;
-  const success = game.turn(sender === game.playerO, move);
-  if (!success) {
-    return zk.sendMessage(dest, { text: "⚠️ Invalid move!" }, { quoted: ms });
-  }
+  const opponent = game.players[1 - game.turn];
 
-  const board = game.render();
-  let message = `
-🎮 *TicTacToe Game*
-${board.slice(0, 3).join("")}
-${board.slice(3, 6).join("")}
-${board.slice(6).join("")}
-  `.trim();
+  if (checkWinner(game.board, game.board[move])) {
+    delete games[`${game.players[0]}:${game.players[1]}`];
+    return zk.sendMessage(dest, {
+      text: `🎉 *Mshindi:* @${sender.split('@')[0]}!\n\n${formatBoard(game.board)}`,
+      mentions: [sender],
+      contextInfo: {
+        forwardingScore: 999,
+        isForwarded: true,
+        externalAdReply: {
+          title: 'Winner!',
+          mediaUrl: conf.URL,
+          sourceUrl: conf.GURL,
+          thumbnailUrl: conf.LOGO
+        },
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: '120363025983927370@newsletter',
+          newsletterName: "Nexus XMD",
+          serverMessageId: "14"
+        }
+      }
+    }, { quoted: ms });
+  }
 
-  if (game.winner) {
-    message += `\n\n🎉 @${game.winner.split("@")[0]} wins the game!`;
-    delete games[room.id];
-  } else if (game.turns >= 9) {
-    message += "\n\n🤝 It's a draw!";
-    delete games[room.id];
-  } else {
-    message += `\n\n🎯 Turn: @${game.currentTurn.split("@")[0]}`;
-  }
+  if (isDraw(game.board)) {
+    delete games[`${game.players[0]}:${game.players[1]}`];
+    return zk.sendMessage(dest, {
+      text: `🤝 *Game Imeisha Sare!*\n\n${formatBoard(game.board)}`,
+      contextInfo: {
+        forwardingScore: 888,
+        isForwarded: true
+      }
+    }, { quoted: ms });
+  }
 
-  await zk.sendMessage(dest, {
-    text: message,
-    mentions: [game.playerX, game.playerO],
-  }, { quoted: ms });
+  game.turn = 1 - game.turn;
+
+  await zk.sendMessage(dest, {
+    text: `✅ *Move imewekwa!* Zamu ya @${opponent.split('@')[0]}\n\n${formatBoard(game.board)}`,
+    mentions: [opponent],
+    contextInfo: {
+      forwardingScore: 999,
+      isForwarded: true
+    }
+  }, { quoted: ms });
 });
-          
