@@ -57,7 +57,7 @@ zokou({
         'externalAdReply': {
           'title': "NEXUS AI",
           'body': "Tap to join the official channel",
-          'thumbnailUrl': "https://files.catbox.moe/q99uu1.jpg",
+          'thumbnailUrl': "https://files.catbox.moe/299643.jpg",
           'mediaType': 0x1,
           'renderLargerThumbnail': true
         }
@@ -72,7 +72,7 @@ zokou({
         message: {
           contactMessage: {
             displayName: "NEXUS-DEV Verified ✓",
-            vcard: "BEGIN:VCARD\nVERSION:3.0\nFN:NEXUS Verified ✓\nTEL;type=CELL:+254700000000\nEND:VCARD"
+            vcard: "BEGIN:VCARD\nVERSION:3.0\nFN:NEXUS Verified ✓\nTEL;type=CELL:+254794146821\nEND:VCARD"
           }
         }
       }
