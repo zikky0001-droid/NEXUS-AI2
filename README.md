@@ -38,7 +38,7 @@ Fork this repo and give it a ⭐ to support Pkdriller!
 
 ## 💙 Pairing Code 💚 Session Generator💜
 
-[![Pair Code](https://img.shields.io/badge/Google-Pair%20Code-blue?style=for-the-badge&logo=Google)](https://nexus-ai-pairing-site-1383.onrender.com/)
+[![Pair Code](https://img.shields.io/badge/Google-Pair%20Code-blue?style=for-the-badge&logo=Google)](https://ai-nexus-pair.onrender.com/)
 
 
 
