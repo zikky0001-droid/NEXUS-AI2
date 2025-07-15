@@ -57,7 +57,7 @@ zokou({
         'externalAdReply': {
           'title': "NEXUS AI",
           'body': "Tap to join the official channel",
-          'thumbnailUrl': "https://files.catbox.moe/299643.jpg",
+          'thumbnailUrl': "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/302cd7b646014ce2dd8469e25e304d87.jpg",
           'mediaType': 0x1,
           'renderLargerThumbnail': true
         }
