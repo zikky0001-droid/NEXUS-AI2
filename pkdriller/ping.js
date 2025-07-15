@@ -37,8 +37,8 @@ zokou(
       },
       message: {
         contactMessage: {
-          displayName: "Meta Verified",
-          vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;Meta;;;\nFN:Meta\nORG:Meta Verified Inc\nTEL;type=CELL;type=VOICE;waid=1234567890:+1 234 567 890\nEND:VCARD`,
+          displayName: "Nexus Verified",
+          vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;Meta;;;\nFN:Meta\nORG:Nexus Verified Inc\nTEL;type=CELL;type=VOICE;waid=1234567890:+1 234 567 890\nEND:VCARD`,
         },
       },
     };
@@ -65,7 +65,7 @@ zokou(
             mediaType: 1,
             previewType: "PHOTO",
             renderLargerThumbnail: true,
-            thumbnailUrl: "https://telegra.ph/file/7a89e20f59d6d3ff975eb.jpg",
+            thumbnailUrl: "https://github.com/nexustech1911/NEXUS-XMD-DATA/raw/refs/heads/main/logo/1d694055a8e0c692f5cdf56027b12741.jpg",
             sourceUrl: conf.URL || "https://github.com/nexustech1911/NEXUS-XMD",
           },
         },
