@@ -2,7 +2,7 @@
   "name": "NEXUS-AI",
   "description": "Best whatsapp bot💥 developed by   Pkdriller 🇰🇪 ",
   "keywords": ["bot", "node", "baileys", "whatsapp"],
-  "logo": "https://files.catbox.moe/pdhcob.jpeg",
+  "logo": "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/302cd7b646014ce2dd8469e25e304d87.jpg",
   "repository": "https://github.com/ekitale/maths-project",
   "succes_url": "/",
   "stack": "heroku-24",
@@ -54,7 +54,7 @@
     },
     "BOT_MENU_LINKS": {
       "description": "add one or many link for your bot menu  ; eg : url1,url2,url3.....",
-      "value": "https://github.com/nexustech1911/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg",
+      "value": "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/302cd7b646014ce2dd8469e25e304d87.jpg",
       "required": false
     },
     "PUBLIC_MODE": {
