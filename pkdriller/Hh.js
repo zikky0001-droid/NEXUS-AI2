@@ -1,59 +1,106 @@
-'use strict';
+const axios = require("axios");
+const moment = require("moment-timezone");
+const { zokou } = require("../framework/zokou");
+const conf = require("../set");
 
-Object.defineProperty(exports, "__esModule", {
-  'value': true
-});
-const {
-  zokou
-} = require("../framework/zokou");
-const newsletterContext = {
-  'contextInfo': {
-    'forwardingScore': 0x3e7,
-    'isForwarded': true,
-    'forwardedNewsletterMessageInfo': {
-      'newsletterJid': "120363288304618280@newsletter",
-      'newsletterName': "𝐍𝐄𝐗𝐔𝐒-𝐀𝐈",
-      'serverMessageId': 0x1
+moment.tz.setDefault(conf.TZ);
+
+function getTime() {
+  const now = moment();
+  return {
+    time: now.format("HH:mm:ss"),
+    date: now.format("dddd, MMMM Do YYYY"),
+  };
+}
+
+zokou(
+  {
+    nomCom: "repo",
+    categorie: "Core",
+  },
+  async (dest, zk) => {
+    // 1️⃣ Send loader
+    const init = await zk.sendMessage(
+      dest,
+      { text: "🔄 *Fetching pkdriller0/NEXUS‑AI stats...*" },
+      {
+        quoted: {
+          key: {
+            fromMe: false,
+            participant: "0@s.whatsapp.net",
+            remoteJid: "status@broadcast",
+          },
+          message: {
+            contactMessage: {
+              displayName: "Nexus Verified",
+              vcard: `BEGIN:VCARD
+VERSION:3.0
+N:Nexus;Verified;;;
+FN:Nexus Verified
+ORG:Nexus-AI Inc.
+TEL;type=CELL;type=VOICE;waid=1234567890:+1 234 567 890
+END:VCARD`,
+            },
+          },
+        },
+      }
+    );
+
+    try {
+      // 2️⃣ Fetch real-time GitHub data
+      const repoUrl = "https://api.github.com/repos/pkdriller0/NEXUS-AI";
+      const r = await axios.get(repoUrl);
+      const {
+        stargazers_count,
+        forks_count,
+        open_issues_count,
+        watchers_count
+      } = r.data;
+      const { time, date } = getTime();
+
+      // 3️⃣ Delete loading message
+      await zk.sendMessage(dest, { delete: init.key });
+
+      // 4️⃣ Send final formatted stats
+      await zk.sendMessage(
+        dest,
+        {
+          text:
+`✅ *NEXUS‑AI Repo Stats*
+
+⭐ Stars: *${stargazers_count}*
+🍴 Forks: *${forks_count}*
+👀 Watchers: *${watchers_count}*
+🐛 Open issues: *${open_issues_count}*
+
+🕒 Time: *${time}*
+📆 Date: *${date}*`,
+          contextInfo: {
+            forwardingScore: 999,
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+              newsletterJid: "120363288304618280@newsletter",
+              newsletterName: "Nexus System",
+            },
+            externalAdReply: {
+              title: "NEXUS‑AI GitHub Repo",
+              body: `Stars: ${stargazers_count} | Forks: ${forks_count}`,
+              mediaType: 1,
+              previewType: "PHOTO",
+              renderLargerThumbnail: true,
+              thumbnailUrl:
+                "https://raw.githubusercontent.com/pkdriller0/NEXUS-AI/main/logo.png",
+              sourceUrl: conf.URL || "https://github.com/pkdriller0/NEXUS-AI",
+            },
+          },
+        },
+        { quoted: init }
+      );
+    } catch (err) {
+      console.error(err);
+      await zk.sendMessage(dest, {
+        text: "❌ Could not fetch repo data. Try again later.",
+      });
     }
   }
-};
-zokou({
-  'nomCom': "repo",
-  'catégorie': "Général",
-  'reaction': '🪀',
-  'nomFichier': __filename
-}, async (_0x3ebb47, _0xff3268, _0x48dbdb) => {
-  try {
-    const _0x1583f8 = await fetch("https://api.github.com/repos/Pkdriller0/NEXUS-AI");
-    const _0x498987 = await _0x1583f8.json();
-    if (_0x498987) {
-      const _0x491941 = {
-        'stars': _0x498987.stargazers_count,
-        'forks': _0x498987.forks_count,
-        'lastUpdate': _0x498987.updated_at,
-        'owner': _0x498987.owner.login
-      };
-      const _0x1ffe6b = new Date(_0x498987.created_at).toLocaleDateString("en-GB");
-      const _0x4ee1b4 = "*dev:𝐏𝐊-𝐃𝐑𝐈𝐋𝐋𝐄𝐑*\n\n_________● *𝐍𝐄𝐗𝐔𝐒-𝐀𝐈* ●____________\n|💥 *ʀᴇᴘᴏsɪᴛᴏʀʏ:* " + _0x498987.html_url + "\n|🌟 *sᴛᴀʀs:* " + _0x491941.stars + "\n|🍽 *ғᴏʀᴋs:* " + _0x491941.forks + "\n|⌚️ *ʀᴇʟᴇᴀsᴇ ᴅᴀᴛᴇ:* " + _0x1ffe6b + "\n|🕐 *ᴜᴘᴅᴀᴛᴇ ᴏɴ:* " + _0x491941.lastUpdate + "\n|👨‍💻 *ᴏᴡɴᴇʀ:* *https://github.com/pkdriller0*\n|💞 *ᴛʜᴇᴍᴇ:* *𝐍𝐄𝐗𝐔𝐒-𝐀𝐈*\n|🥰 𝐢𝐧𝐭𝐞𝐥𝐥𝐢𝐠𝐞𝐧𝐜𝐞 𝐢𝐧𝐭𝐞𝐫𝐚𝐜𝐭𝐢𝐨𝐧𝐬 𝐚𝐡𝐞𝐚𝐝  𝐲𝐨𝐮𝐫 𝐀𝐈-𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐜𝐨𝐦𝐩𝐚𝐧𝐢𝐨𝐧👑\n__________________________________\n            *ᴍᴀᴅᴇ ᴡɪᴛʜ love by  𝐏𝐊-𝐃𝐑𝐈𝐋𝐋𝐄𝐑*";
-      await _0xff3268.sendMessage(_0x3ebb47, {
-        'image': {
-          'url': "https://github.com/nexustech1911/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-airepo.jpg"
-        },
-        'caption': _0x4ee1b4,
-        ...newsletterContext
-      });
-      await _0xff3268.sendMessage(_0x3ebb47, {
-        'audio': {
-          'url': "https://github.com/nexustech1911/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3"
-        },
-        'mimetype': "audio/mp4",
-        'ptt': false,
-        ...newsletterContext
-      });
-    } else {
-      console.log("Could not fetch data");
-    }
-  } catch (_0x475131) {
-    console.log("Error fetching data:", _0x475131);
-  }
-});
+);
