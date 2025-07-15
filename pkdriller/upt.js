@@ -1,66 +1,71 @@
-const util = require('util');
-const fs = require('fs-extra');
-const axios = require('axios');
-const { zokou } = require(__dirname + "/../framework/zokou");
 const os = require("os");
 const moment = require("moment-timezone");
-const conf = require(__dirname + "/../set");
+const { zokou } = require("../framework/zokou");
+const conf = require("../set");
 
-const AUDIO_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/music/nexus.mp3";
-const THUMBNAIL_URL = "https://github.com/pkdriller0/NEXUS-XMD-DATA/raw/refs/heads/main/logo/nexus-ai.jpeg";
+moment.tz.setDefault(conf.TZ);
 
-moment.tz.setDefault(`${conf.TZ}`);
+function formatUptime(ms) {
+  const sec = Math.floor((ms / 1000) % 60);
+  const min = Math.floor((ms / (1000 * 60)) % 60);
+  const hrs = Math.floor((ms / (1000 * 60 * 60)) % 24);
+  const days = Math.floor(ms / (1000 * 60 * 60 * 24));
 
-const getTimeAndDate = () => {
-    return {
-        time: moment().format('HH:mm:ss'),
-        date: moment().format('DD/MM/YYYY')
+  return `${days}d ${hrs}h ${min}m ${sec}s`;
+}
+
+const startTime = Date.now();
+
+zokou(
+  {
+    nomCom: "uptime",
+    categorie: "Core",
+  },
+  async (dest, zk, commandeOptions) => {
+    const { ms } = commandeOptions;
+    const uptime = formatUptime(Date.now() - startTime);
+    const now = moment();
+    const time = now.format("HH:mm:ss");
+    const date = now.format("dddd, MMMM Do YYYY");
+
+    const fakeVerified = {
+      key: {
+        fromMe: false,
+        participant: "0@s.whatsapp.net",
+        remoteJid: "status@broadcast",
+      },
+      message: {
+        contactMessage: {
+          displayName: "Nexus Verified",
+          vcard: `BEGIN:VCARD\nVERSION:3.0\nN:Nexus;Verified;;;\nFN:Nexus Verified\nORG:Nexus-AI Inc.\nTEL;type=CELL;type=VOICE;waid=1234567890:+1 234 567 890\nEND:VCARD`,
+        },
+      },
     };
-};
 
-const formatUptime = (seconds) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
-    return `${h}h ${m}m ${s}s`;
-};
-
-zokou({ nomCom: "uptime", categorie: "Tools" }, async (dest, zk, commandeOptions) => {
-    let { ms } = commandeOptions;
-    const { time, date } = getTimeAndDate();
-    const uptime = process.uptime();
-
-    try {
-        await zk.sendMessage(dest, {
-            text: `⏳ *Bot Uptime*\n\n🔁 Uptime: *${formatUptime(Math.floor(uptime))}*\n📅 Date: ${date}\n🕓 Time: ${time}`,
-            contextInfo: {
-                forwardingScore: 999,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363288304618280@newsletter',
-                    newsletterName: 'NEXUS-AI',
-                    serverMessageId: 143
-                },
-                externalAdReply: {
-                    title: "Bot Uptime Monitor",
-                    body: "Check how long Nexus bot has been active.",
-                    thumbnailUrl: THUMBNAIL_URL,
-                    mediaType: 1,
-                    renderLargerThumbnail: true,
-                    sourceUrl: conf.GURL
-                }
-            }
-        }, { quoted: ms });
-
-        await zk.sendMessage(dest, {
-            audio: { url: AUDIO_URL },
-            mimetype: 'audio/mp4',
-            ptt: true
-        }, { quoted: ms });
-
-    } catch (e) {
-        console.log("❌ Uptime Command Error: " + e);
-        await zk.sendMessage(dest, { text: "❌ Error in uptime command." }, { quoted: ms });
-    }
-});
-                       
+    await zk.sendMessage(
+      dest,
+      {
+        text: `🤖 *NEXUS-AI Uptime*\n\n⏱️ *Uptime:* ${uptime}\n📆 *Date:* ${date}\n🕒 *Time:* ${time}`,
+        contextInfo: {
+          forwardingScore: 999,
+          isForwarded: true,
+          forwardedNewsletterMessageInfo: {
+            newsletterJid: "120363288304618280@newsletter",
+            newsletterName: "Nexus System",
+          },
+          externalAdReply: {
+            title: "NEXUS-AI STATUS",
+            body: `Running for ${uptime}`,
+            mediaType: 1,
+            previewType: "PHOTO",
+            renderLargerThumbnail: true,
+            thumbnailUrl:
+              "https://github.com/nexustech1911/NEXUS-XMD-DATA/raw/refs/heads/main/logo/1d694055a8e0c692f5cdf56027b12741.jpg",
+            sourceUrl: conf.URL || "https://github.com/nexustech1911/NEXUS-AI",
+          },
+        },
+      },
+      { quoted: fakeVerified }
+    );
+  }
+);
