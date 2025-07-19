@@ -87,6 +87,6 @@ ${adminsGroupe.map((a, i) => `${emojis[i % emojis.length]} @${a.id.split("@")[0]
   // ⏳ Auto-delete after 10 seconds
   setTimeout(() => {
     zk.sendMessage(dest, { delete: sent.key });
-  }, 10_000); // 10 seconds
+  }, 20_000); // 10 seconds
 
 });
