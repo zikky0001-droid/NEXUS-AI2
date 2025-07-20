@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: nexus-ai-whatsapp-bot
+    name: nexus-ai
     repo: https://github.com/pkdriller0/NEXUS-AI
     branch: main
     buildCommand: npm install
