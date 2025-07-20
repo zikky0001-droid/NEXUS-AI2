@@ -8,16 +8,24 @@ let antilinkGroups = fs.existsSync(antilinkFile)
   ? JSON.parse(fs.readFileSync(antilinkFile))
   : [];
 
-// Save to file
+// Save changes
 function saveAntilink() {
   fs.writeFileSync(antilinkFile, JSON.stringify(antilinkGroups, null, 2));
 }
 
-// Command to turn antilink on/off
+// Antilink command
 zokou({ nomCom: "antilink", categorie: "group", reaction: "🚫" }, async (dest, zk, commandeOptions) => {
-  const { ms, arg, isGroup, superUser, groupAdmins, userSender, msgRepondu } = commandeOptions;
+  const { ms, arg, superUser, groupMetadata, userSender } = commandeOptions;
+  const groupId = ms.key.remoteJid;
+  const isGroup = groupId.endsWith("@g.us");
 
-  if (!isGroup) return zk.sendMessage(dest, { text: "❌ This command works only in groups!" }, { quoted: ms });
+  if (!isGroup) {
+    return zk.sendMessage(dest, { text: "❌ This command works only in groups!" }, { quoted: ms });
+  }
+
+  const groupAdmins = groupMetadata.participants
+    .filter(p => p.admin !== null)
+    .map(p => p.id);
 
   if (!groupAdmins.includes(userSender) && !superUser) {
     return zk.sendMessage(dest, { text: "❌ Only admins can use this command." }, { quoted: ms });
@@ -29,39 +37,15 @@ zokou({ nomCom: "antilink", categorie: "group", reaction: "🚫" }, async (dest,
   }
 
   if (action === "on") {
-    if (!antilinkGroups.includes(dest)) {
-      antilinkGroups.push(dest);
+    if (!antilinkGroups.includes(groupId)) {
+      antilinkGroups.push(groupId);
       saveAntilink();
     }
-    zk.sendMessage(dest, { text: "✅ Antilink has been *activated*." }, { quoted: ms });
-  } else if (action === "off") {
-    antilinkGroups = antilinkGroups.filter(groupId => groupId !== dest);
+    zk.sendMessage(dest, { text: "✅ Antilink has been *activated* in this group." }, { quoted: ms });
+  } else {
+    antilinkGroups = antilinkGroups.filter(id => id !== groupId);
     saveAntilink();
-    zk.sendMessage(dest, { text: "❌ Antilink has been *deactivated*." }, { quoted: ms });
+    zk.sendMessage(dest, { text: "❌ Antilink has been *deactivated* in this group." }, { quoted: ms });
   }
 });
-
-// Monitor messages to detect links
-zokou({ nomCom: "monitor_antilink", fromMe: false }, async (dest, zk, commandeOptions) => {
-  const { ms, isGroup, sender, msgType } = commandeOptions;
-  const messageText = ms?.message?.conversation || ms?.message?.extendedTextMessage?.text || "";
-
-  if (!isGroup || !antilinkGroups.includes(dest)) return;
-
-  // Detect links
-  const linkRegex = /https?:\/\/[^\s]+/gi;
-  if (linkRegex.test(messageText)) {
-    try {
-      // Delete the message
-      await zk.sendMessage(dest, { delete: ms.key });
-
-      // Remove member
-      await zk.groupParticipantsUpdate(dest, [sender], "remove");
-
-      await zk.sendMessage(dest, { text: `🚫 Link detected and user removed.` });
-    } catch (err) {
-      console.error("Antilink error:", err);
-    }
-  }
-});
-      
+                          
