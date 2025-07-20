@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: nexus-ai-whatsapp-bot
+    repo: https://github.com/YOUR-USERNAME/YOUR-REPO-NAME
+    branch: main
+    buildCommand: npm install
+    startCommand: npm start
+    env: node
+    plan: starter
+    autoDeploy: true
+    envVars:
+      - key: WHATSAPP_API_KEY
+        value: your-api-key-here
+      - key: NODE_ENV
+        value: production
+      # Add any other environment variables your bot needs here
