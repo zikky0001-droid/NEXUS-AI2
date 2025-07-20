@@ -1,7 +1,7 @@
 const { zokou } = require("../framework/zokou");
 const fs = require("fs");
 
-const antilinkFile = "./database/antilink.json";
+const antilinkFile = "./xmd/antilink.json";
 
 // Load antilink group settings
 let antilinkGroups = fs.existsSync(antilinkFile)
